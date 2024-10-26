@@ -1,0 +1,25 @@
+[
+  {
+    "method": "get",
+    "name": "geo-download-defence",
+    "accessPolicy": "deny",
+    "parameters": {
+      "clientIp": {
+        "type": "string",
+        "when-not": "127.0.0.1"
+      },
+      "x": {
+        "type": "int",
+        "when": "monotonous"
+      },
+      "y": {
+        "type": "int",
+        "when": "monotonous"
+      },
+      "z": {
+        "type": "int",
+        "when": "monotonous"
+      }
+    }
+  }
+]

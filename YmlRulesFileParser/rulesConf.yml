@@ -1,0 +1,18 @@
+rules:
+  - name: geo-download-defence-get
+    method: get
+    access-policy: deny
+    source-ip: 127.0.0.1
+    parameters:
+      x: 
+          type: int
+          when: monotonous
+      y:
+          type: int
+          when: monotonous
+      z:
+          type: int
+          when: monotonous
+  - name: geo-download-defence-post
+    method: post  
+    access-policy: allow
