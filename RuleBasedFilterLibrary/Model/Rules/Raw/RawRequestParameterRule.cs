@@ -1,6 +1,6 @@
 ﻿namespace YmlRulesFileParser.Model.Rules.Raw;
 
-public class RawRuleForRequestParameter
+public class RawRequestParameterRule
 {
     /// <summary>
     /// Тип параметра

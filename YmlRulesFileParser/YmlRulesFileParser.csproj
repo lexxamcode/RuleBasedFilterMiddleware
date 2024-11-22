@@ -14,13 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="rulesConf.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\RuleBasedFilterLibrary\RuleBasedFilterLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\Requests\" />
+    <None Update="rulesConf.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

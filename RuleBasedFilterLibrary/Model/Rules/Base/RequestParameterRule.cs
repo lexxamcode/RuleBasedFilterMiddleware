@@ -2,7 +2,6 @@
 
 namespace YmlRulesFileParser.Model.Rules.Base;
 
-
 /// <summary>
 /// Правило для отдельного параметра
 /// </summary>

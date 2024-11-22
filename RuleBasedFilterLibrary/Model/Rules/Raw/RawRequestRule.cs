@@ -1,6 +1,6 @@
 ﻿namespace YmlRulesFileParser.Model.Rules.Raw;
 
-public class RawRuleForRequest
+public class RawRequestRule
 {
     /// <summary>
     /// Название правила
@@ -30,5 +30,5 @@ public class RawRuleForRequest
     /// <summary>
     /// Правила для отдельных параметров запроса
     /// </summary>
-    public Dictionary<string, RawRuleForRequestParameter> ParameterRules { get; set; } = [];
+    public Dictionary<string, RawRequestParameterRule> ParameterRules { get; set; } = [];
 }

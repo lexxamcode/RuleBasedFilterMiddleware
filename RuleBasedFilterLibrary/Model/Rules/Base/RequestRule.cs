@@ -2,7 +2,6 @@
 
 namespace YmlRulesFileParser.Model.Rules.Base;
 
-
 /// <summary>
 /// Базовый класс для правила
 /// </summary>

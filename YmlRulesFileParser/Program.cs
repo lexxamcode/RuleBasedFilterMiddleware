@@ -9,8 +9,8 @@ var deserializer = new DeserializerBuilder()
     .WithNamingConvention(HyphenatedNamingConvention.Instance)
     .Build();
 
-var rawRulesContainer = deserializer.Deserialize<RawRulesContainer>(fileContentAsString);
-
+// rulesConf.yml deserialization into Rules
+var rawRulesContainer = deserializer.Deserialize<RawRequestRulesContainer>(fileContentAsString);
 var rules = rawRulesContainer.RequestRules.Select(rule => RequestRuleFactory.CreateRequestRuleFromItsRawRepresentation(rule)).ToList();
 
 Console.WriteLine(rules.Count);

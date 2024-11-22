@@ -6,7 +6,7 @@ namespace YmlRulesFileParser.Model.Rules;
 
 public static class RequestParameterRuleFactory
 {
-    public static RequestParameterRule CreateFromRawRequestParameterRule(RawRuleForRequestParameter rawRequestParameterRule)
+    public static RequestParameterRule CreateFromRawRequestParameterRule(RawRequestParameterRule rawRequestParameterRule)
     {
         var comparisonExpressionMembers = rawRequestParameterRule.ShouldBe.Split(" ");
         var parameterType = TypeResolver.GetTypeFromString(rawRequestParameterRule.Type);
