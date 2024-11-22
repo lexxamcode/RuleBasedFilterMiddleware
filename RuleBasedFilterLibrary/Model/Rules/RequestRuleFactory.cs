@@ -15,8 +15,9 @@ public static class RequestRuleFactory
             Name = rawRequestRule.Name,
             SourceIp = rawRequestRule.SourceIp,
             AccessPolicy = accessPolicy,
-            HttpMethod = rawRequestRule.Method,
-            ParameterRules = requestParameterRules
+            HttpMethod = rawRequestRule.RequestMethod,
+            ParameterRules = requestParameterRules,
+            Endpoint = rawRequestRule.ForEndpoint
         };
 
         return requestRule;

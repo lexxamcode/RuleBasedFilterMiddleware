@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YmlRulesFileParser", "YmlRu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuleBasedFilterLibrary", "RuleBasedFilterLibrary\RuleBasedFilterLibrary.csproj", "{BA2820BC-DD6F-4C98-A00D-BF0CDBD69644}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebApplication", "TestWebApplication\TestWebApplication.csproj", "{F2173936-465C-4DA9-956E-0342878E8A82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BA2820BC-DD6F-4C98-A00D-BF0CDBD69644}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA2820BC-DD6F-4C98-A00D-BF0CDBD69644}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA2820BC-DD6F-4C98-A00D-BF0CDBD69644}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2173936-465C-4DA9-956E-0342878E8A82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2173936-465C-4DA9-956E-0342878E8A82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2173936-465C-4DA9-956E-0342878E8A82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2173936-465C-4DA9-956E-0342878E8A82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

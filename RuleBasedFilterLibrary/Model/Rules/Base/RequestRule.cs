@@ -23,6 +23,11 @@ public class RequestRule : IRule
     public string HttpMethod { get; set; } = string.Empty;
 
     /// <summary>
+    /// Эндпоинт, для которого настраивается правило
+    /// </summary>
+    public string Endpoint { get; set; } = string.Empty;
+
+    /// <summary>
     /// Политика доступа
     /// </summary>
     public AccessPolicy AccessPolicy { get; set; }
@@ -37,8 +42,11 @@ public class RequestRule : IRule
         var isRequestEthalon = false;
 
         var clientIp = GetSourceIpFromRequest(request);
+        var enpoint = request.Path.HasValue ? request.Path.Value : string.Empty;
 
-        if (clientIp == SourceIp && HttpMethod.Equals(request.Method, StringComparison.InvariantCultureIgnoreCase))
+        if (clientIp == SourceIp &&
+            HttpMethod.Equals(request.Method, StringComparison.InvariantCultureIgnoreCase) &&
+            Endpoint.Equals(enpoint, StringComparison.InvariantCulture))
             isRequestEthalon = true;
 
         return AccessPolicy switch
