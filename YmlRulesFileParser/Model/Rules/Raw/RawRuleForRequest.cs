@@ -1,10 +1,6 @@
-﻿namespace YmlRulesFileParser.Model.Rules.Base;
+﻿namespace YmlRulesFileParser.Model.Rules.Raw;
 
-
-/// <summary>
-/// Базовый абстрактный класс для правила
-/// </summary>
-public class Rule
+public class RawRuleForRequest
 {
     /// <summary>
     /// Название правила
@@ -27,7 +23,12 @@ public class Rule
     public string AccessPolicy { get; set; } = string.Empty;
 
     /// <summary>
+    /// Логическое выражение для комбинации всех параметров в один фильтр
+    /// </summary>
+    public string ParameterRulesCombination { get; set; } = string.Empty;
+
+    /// <summary>
     /// Правила для отдельных параметров запроса
     /// </summary>
-    public Dictionary<string, ParameterRuleEntry> Parameters { get; set; } = [];
+    public Dictionary<string, RawRuleForRequestParameter> ParameterRules { get; set; } = [];
 }

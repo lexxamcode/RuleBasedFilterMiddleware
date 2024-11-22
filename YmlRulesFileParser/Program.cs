@@ -1,22 +1,24 @@
 ﻿using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using YmlRulesFileParser.Model.Rules.Base;
+using YmlRulesFileParser.Model.Rules;
+using YmlRulesFileParser.Model.Rules.Raw;
 
 var fileContentAsString = File.ReadAllText("rulesConf.Yml");
-
-Console.WriteLine(fileContentAsString);
 
 var deserializer = new DeserializerBuilder()
     .WithNamingConvention(HyphenatedNamingConvention.Instance)
     .Build();
 
-var rulesContainer = deserializer.Deserialize<RulesContainer>(fileContentAsString);
-Console.WriteLine();
-Console.WriteLine(rulesContainer.Rules.First().Name);
+var rawRulesContainer = deserializer.Deserialize<RawRulesContainer>(fileContentAsString);
 
-foreach (var parameter in rulesContainer.Rules.First().Parameters)
+var rules = rawRulesContainer.RequestRules.Select(rule => RequestRuleFactory.CreateRequestRuleFromItsRawRepresentation(rule)).ToList();
+
+Console.WriteLine(rules.Count);
+
+foreach (var rule in rules)
 {
-    Console.WriteLine(parameter.Key);
-
-    Console.WriteLine(parameter.Value.When);
+    Console.WriteLine(rule.Name);
+    Console.WriteLine(rule.HttpMethod);
+    Console.WriteLine(rule.AccessPolicy);
+    Console.WriteLine(rule.ParameterRules.Count);
 }

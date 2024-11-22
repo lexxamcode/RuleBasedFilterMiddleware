@@ -1,4 +1,4 @@
-﻿namespace YmlRulesFileParser.Model.Requests;
+﻿namespace YmlRulesFileParser.Model.Rules.Base;
 
 
 /// <summary>
