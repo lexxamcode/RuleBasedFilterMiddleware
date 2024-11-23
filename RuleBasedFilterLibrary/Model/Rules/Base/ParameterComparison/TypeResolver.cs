@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public static class TypeResolver
 {
-    private static readonly Dictionary<string, Type> TypeMappings = new Dictionary<string, Type>
+    private static readonly Dictionary<string, Type> TypeMappings = new()
     {
         { "int", typeof(int) },
         { "integer", typeof(int) },

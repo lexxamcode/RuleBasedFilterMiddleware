@@ -3,7 +3,7 @@ using RuleBasedFilterLibrary.Model.Rules.Raw;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-var fileContentAsString = File.ReadAllText("rulesConf.Yml");
+var fileContentAsString = File.ReadAllText("rulesConf.yml");
 
 var deserializer = new DeserializerBuilder()
     .WithNamingConvention(HyphenatedNamingConvention.Instance)

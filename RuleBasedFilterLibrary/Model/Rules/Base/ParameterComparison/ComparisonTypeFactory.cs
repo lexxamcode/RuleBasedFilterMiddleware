@@ -2,17 +2,21 @@
 
 public static class ComparisonTypeFactory
 {
+    public static readonly Dictionary<string, ComparisonType> ComparisonTypeMappings = new() {
+        { "==", ComparisonType.Equal },
+        { "!=", ComparisonType.NotEqual },
+        { ">", ComparisonType.GreaterThan },
+        { ">=", ComparisonType.GreaterOrEqualTo },
+        { "<", ComparisonType.LessThan },
+        { "<=", ComparisonType.LessOrEqualTo }
+    };
+
     public static ComparisonType CreateComparisonTypeFromString(string comparisonExpression)
     {
-        return comparisonExpression switch
-        {
-            "==" => ComparisonType.Equal,
-            "!=" => ComparisonType.NotEqual,
-            "<" => ComparisonType.LessThan,
-            "<=" => ComparisonType.LessOrEqualTo,
-            ">" => ComparisonType.GreaterThan,
-            ">=" => ComparisonType.GreaterOrEqualTo,
-            _ => throw new ArgumentException($"Invalid expression type {comparisonExpression}")
-        };
+        var doesMappingExist = ComparisonTypeMappings.TryGetValue(comparisonExpression, out var mapping);
+
+        return doesMappingExist ?
+            mapping : 
+            throw new ArgumentException($"Invalid comparison expression {comparisonExpression}");
     }
 }
