@@ -8,7 +8,9 @@ public static class ComparisonTypeFactory
         { ">", ComparisonType.GreaterThan },
         { ">=", ComparisonType.GreaterOrEqualTo },
         { "<", ComparisonType.LessThan },
-        { "<=", ComparisonType.LessOrEqualTo }
+        { "<=", ComparisonType.LessOrEqualTo },
+        { "monotonous", ComparisonType.Monotonous },
+        { "non-monotonous", ComparisonType.NonMonotonous }
     };
 
     public static ComparisonType CreateComparisonTypeFromString(string comparisonExpression)

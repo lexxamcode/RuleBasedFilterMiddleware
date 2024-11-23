@@ -8,14 +8,26 @@ public static class RequestParameterRuleFactory
 {
     public static RequestParameterRule CreateFromRawRequestParameterRule(RawRequestParameterRule rawRequestParameterRule)
     {
-        var comparisonExpressionMembers = rawRequestParameterRule.ShouldBe.Split(" ");
         var parameterType = TypeResolver.GetTypeFromString(rawRequestParameterRule.Type);
+
+        var comparisonExpressionMembers = rawRequestParameterRule.ShouldBe.Split(" ");
+        var comparisonType = ComparisonTypeFactory.CreateComparisonTypeFromString(comparisonExpressionMembers[0]);
+        object? ethalonValue;
+
+        try
+        {
+            ethalonValue = Convert.ChangeType(comparisonExpressionMembers[1], parameterType);
+        }
+        catch(Exception)
+        {
+            ethalonValue = null;
+        }
 
         var requestParameterRule = new RequestParameterRule
         {
             ParameterType = parameterType,
-            ComparisonType = ComparisonTypeFactory.CreateComparisonTypeFromString(comparisonExpressionMembers[0]),
-            EthalonValue = Convert.ChangeType(comparisonExpressionMembers[1], parameterType)
+            ComparisonType = comparisonType,
+            EthalonValue = ethalonValue
         };
 
         return requestParameterRule;

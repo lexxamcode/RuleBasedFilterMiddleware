@@ -7,10 +7,10 @@ namespace TestWebApplication.Controllers
     public class WeatherForecastController(ILogger<WeatherForecastController> logger) : ControllerBase
     {
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<int> Get(int z, int x, int y)
+        public IActionResult Get(int z, int x, int y)
         {
             logger.LogInformation("GET: {z}, {x}, {y}", z, x, y);
-            return [z, x, y];
+            return Ok(HttpContext.Request.Host.Value);
         }
 
         [HttpPost]

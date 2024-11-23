@@ -42,7 +42,7 @@ public class RequestParameterRule
         };
     }
 
-    private int CastToIComparableAndCompare(object actualValue, object ethalonValue)
+    private static int CastToIComparableAndCompare(object actualValue, object ethalonValue)
     {
         if (actualValue is not IComparable actualValueAsComparable ||
             ethalonValue is not IComparable ethalonValueAsComparable)
