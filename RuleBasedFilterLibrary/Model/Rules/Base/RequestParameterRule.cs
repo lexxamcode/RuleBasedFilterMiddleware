@@ -1,6 +1,6 @@
-﻿using YmlRulesFileParser.Model.Rules.Base.ParameterComparison;
+﻿using RuleBasedFilterLibrary.Model.Rules.Base.ParameterComparison;
 
-namespace YmlRulesFileParser.Model.Rules.Base;
+namespace RuleBasedFilterLibrary.Model.Rules.Base;
 
 /// <summary>
 /// Правило для отдельного параметра
@@ -32,8 +32,8 @@ public class RequestParameterRule
 
         return ComparisonType switch
         {
-            ComparisonType.Equal => actualValueWithGivenType == ethalonValueWithGivenType,
-            ComparisonType.NotEqual => actualValueWithGivenType != ethalonValueWithGivenType,
+            ComparisonType.Equal => CastToIComparableAndCompare(actualValueWithGivenType, ethalonValueWithGivenType) == 0,
+            ComparisonType.NotEqual => CastToIComparableAndCompare(actualValueWithGivenType, ethalonValueWithGivenType) != 0,
             ComparisonType.LessThan => CastToIComparableAndCompare(actualValueWithGivenType, ethalonValueWithGivenType) < 0,
             ComparisonType.LessOrEqualTo => CastToIComparableAndCompare(actualValueWithGivenType, ethalonValueWithGivenType) <= 0,
             ComparisonType.GreaterThan => CastToIComparableAndCompare(actualValueWithGivenType, ethalonValueWithGivenType) > 0,

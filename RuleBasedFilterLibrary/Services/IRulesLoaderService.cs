@@ -1,4 +1,4 @@
-﻿using YmlRulesFileParser.Model.Rules.Base;
+﻿using RuleBasedFilterLibrary.Model.Rules.Base;
 
 namespace RuleBasedFilterLibrary.Services;
 

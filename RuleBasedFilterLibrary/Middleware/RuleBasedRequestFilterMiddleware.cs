@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using RuleBasedFilterLibrary.Model.Rules.Base;
 using RuleBasedFilterLibrary.Services;
-using YmlRulesFileParser.Model.Rules.Base;
 
 namespace RuleBasedFilterLibrary.Middleware;
 
@@ -25,6 +25,7 @@ public class RuleBasedRequestFilterMiddleware(
                 return;
             }
         }
+        
         await _next(context);
     }
 }

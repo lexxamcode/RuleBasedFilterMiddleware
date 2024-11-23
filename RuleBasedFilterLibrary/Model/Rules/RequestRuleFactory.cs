@@ -1,7 +1,7 @@
-﻿using YmlRulesFileParser.Model.Rules.Base;
-using YmlRulesFileParser.Model.Rules.Raw;
+﻿using RuleBasedFilterLibrary.Model.Rules.Base;
+using RuleBasedFilterLibrary.Model.Rules.Raw;
 
-namespace YmlRulesFileParser.Model.Rules;
+namespace RuleBasedFilterLibrary.Model.Rules;
 
 public static class RequestRuleFactory
 {

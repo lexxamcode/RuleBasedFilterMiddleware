@@ -5,7 +5,7 @@ request-rules:
     access-policy: deny
     parameter-rules:
       z:
-          type: double
+          type: int
           should-be: == 0
       x:
           type: int

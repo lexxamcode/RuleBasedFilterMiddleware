@@ -1,4 +1,4 @@
-﻿namespace YmlRulesFileParser.Model.Rules.Base.ParameterComparison;
+﻿namespace RuleBasedFilterLibrary.Model.Rules.Base.ParameterComparison;
 
 public static class ComparisonTypeFactory
 {

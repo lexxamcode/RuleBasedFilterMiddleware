@@ -1,4 +1,4 @@
-﻿namespace YmlRulesFileParser.Model.Rules.Raw;
+﻿namespace RuleBasedFilterLibrary.Model.Rules.Raw;
 
 public class RawRequestRulesContainer
 {

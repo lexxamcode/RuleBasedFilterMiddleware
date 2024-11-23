@@ -1,4 +1,4 @@
-﻿namespace YmlRulesFileParser.Model.Rules.Base;
+﻿namespace RuleBasedFilterLibrary.Model.Rules.Base;
 
 public class RulesContainer
 {

@@ -1,7 +1,7 @@
-﻿using YamlDotNet.Serialization;
+﻿using RuleBasedFilterLibrary.Model.Rules;
+using RuleBasedFilterLibrary.Model.Rules.Raw;
+using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using YmlRulesFileParser.Model.Rules;
-using YmlRulesFileParser.Model.Rules.Raw;
 
 var fileContentAsString = File.ReadAllText("rulesConf.Yml");
 

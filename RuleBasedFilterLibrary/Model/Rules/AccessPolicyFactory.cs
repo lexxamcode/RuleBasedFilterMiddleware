@@ -1,6 +1,6 @@
-﻿using YmlRulesFileParser.Model.Rules.Base;
+﻿using RuleBasedFilterLibrary.Model.Rules.Base;
 
-namespace YmlRulesFileParser.Model.Rules;
+namespace RuleBasedFilterLibrary.Model.Rules;
 
 public static class AccessPolicyFactory
 {

@@ -1,4 +1,4 @@
-﻿namespace YmlRulesFileParser.Model.Rules.Base.ParameterComparison;
+﻿namespace RuleBasedFilterLibrary.Model.Rules.Base.ParameterComparison;
 
 using System;
 using System.Collections.Generic;

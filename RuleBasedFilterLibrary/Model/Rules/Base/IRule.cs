@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace YmlRulesFileParser.Model.Rules.Base;
+namespace RuleBasedFilterLibrary.Model.Rules.Base;
 
 public interface IRule
 {

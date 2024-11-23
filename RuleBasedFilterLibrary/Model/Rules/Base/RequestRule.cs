@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace YmlRulesFileParser.Model.Rules.Base;
+namespace RuleBasedFilterLibrary.Model.Rules.Base;
 
 /// <summary>
 /// Базовый класс для правила
@@ -46,7 +46,8 @@ public class RequestRule : IRule
 
         if (clientIp == SourceIp &&
             HttpMethod.Equals(request.Method, StringComparison.InvariantCultureIgnoreCase) &&
-            Endpoint.Equals(enpoint, StringComparison.InvariantCulture))
+            Endpoint.Equals(enpoint, StringComparison.InvariantCulture) && 
+            AreParamtersEqualToDeclaredEthalons(request))
             isRequestEthalon = true;
 
         return AccessPolicy switch
@@ -61,5 +62,26 @@ public class RequestRule : IRule
     {
         return request.Headers["X-Forwarded-For"].ToString() ??
             throw new Exception("Could not get X-Forwarded-For header for request");
+    }
+
+    private bool AreParamtersEqualToDeclaredEthalons(HttpRequest request)
+    {
+        foreach (var requestParameterRuleDictEntry in ParameterRules)
+        {
+            var parameterValueAsString = System.Web.HttpUtility
+                .ParseQueryString(request.QueryString.Value)
+                .Get(requestParameterRuleDictEntry.Key);
+
+            if (parameterValueAsString is null)
+                throw new ArgumentException("Failed to parse request parameter");
+
+            var parameterRule = requestParameterRuleDictEntry.Value;
+            var parameterValidationResult =  parameterRule.CompareTo(parameterValueAsString);
+
+            if (!parameterValidationResult)
+                return false;
+        }
+        
+        return true;
     }
 }

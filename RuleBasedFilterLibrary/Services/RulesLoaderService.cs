@@ -1,8 +1,8 @@
-﻿using YamlDotNet.Serialization;
+﻿using RuleBasedFilterLibrary.Model.Rules;
+using RuleBasedFilterLibrary.Model.Rules.Base;
+using RuleBasedFilterLibrary.Model.Rules.Raw;
+using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using YmlRulesFileParser.Model.Rules;
-using YmlRulesFileParser.Model.Rules.Base;
-using YmlRulesFileParser.Model.Rules.Raw;
 
 namespace RuleBasedFilterLibrary.Services;
 
