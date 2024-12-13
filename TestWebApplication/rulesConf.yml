@@ -12,7 +12,7 @@ request-rules:
         should-be: monotone
       - name: y
         type: int
-        should-be: monotone
+        should-be: "> 0"
   - name: geo-download-defence-post
     request-method: post
     for-endpoint: "/WeatherForecast/SomePostMethod"

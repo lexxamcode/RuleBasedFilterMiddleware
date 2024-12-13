@@ -2,6 +2,7 @@
 using RuleBasedFilterLibrary.Extensions;
 using RuleBasedFilterLibrary.Model.Requests;
 using RuleBasedFilterLibrary.Model.Rules.Base;
+using RuleBasedFilterLibrary.Model.Rules.Base.ParameterComparison;
 using RuleBasedFilterLibrary.Services;
 using RuleBasedFilterLibrary.Services.DeepAnalysis;
 using System.Web;
@@ -45,7 +46,8 @@ public class RuleBasedRequestFilterMiddleware(
             {
                 foreach (var parameterRule in rule.ParameterRules)
                 {
-                    if (parameterRule.ComparisonType != Model.Rules.Base.ParameterComparison.ComparisonType.NonMonotous)
+                    if (parameterRule.ComparisonType is not ComparisonType.NonMonotous &&
+                        parameterRule.ComparisonType is not ComparisonType.Monotonous)
                         continue;
 
                     var isParameterValid = await requestSequenceAnalyzer.Validate(request, parameterRule);

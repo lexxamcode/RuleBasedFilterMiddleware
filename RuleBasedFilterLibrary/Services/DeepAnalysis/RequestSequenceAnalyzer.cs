@@ -20,7 +20,6 @@ public class RequestSequenceAnalyzer(IOpenSearchClient openSearchClient) : IRequ
         var lastRequestsFromCurrentIpAsList = lastRequestsFromCurrentIp.Documents.ToList();
 
         var isParameterMonotone = IsParameterMonotone(lastRequestsFromCurrentIpAsList, requestParameterRule);
-        Console.WriteLine(lastRequestsFromCurrentIpAsList.Count);
         return !isParameterMonotone;
     }
 

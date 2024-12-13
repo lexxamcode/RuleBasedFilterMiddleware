@@ -48,12 +48,11 @@ public class RequestRule : IRule
         var isRequestEthalon = false;
 
         var clientIp = context.Connection.RemoteIpAddress.ToString();
-        var enpoint = context.Request.Path.HasValue ? context.Request.Path.Value : string.Empty;
+        var endpoint = context.Request.Path.HasValue ? context.Request.Path.Value : string.Empty;
 
-        if (clientIp == SourceIp &&
-            HttpMethod.Equals(context.Request.Method, StringComparison.InvariantCultureIgnoreCase) &&
-            Endpoint.Equals(enpoint, StringComparison.InvariantCulture) &&
-            SourceIp.Equals(clientIp) &&
+        if (CheckIpAddress(clientIp) &&
+            CheckHttpMethod(context) &&
+            CheckEndpoint(endpoint) &&
             AreParamtersEqualToDeclaredEthalons(context.Request))
             isRequestEthalon = true;
 
@@ -63,6 +62,30 @@ public class RequestRule : IRule
             AccessPolicy.Deny => Task.FromResult(!isRequestEthalon),
             _ => Task.FromResult(false)
         };
+    }
+
+    private bool CheckIpAddress(string ipAddress)
+    {
+        if (string.IsNullOrEmpty(SourceIp))
+            return true;
+
+        return ipAddress.Equals(SourceIp, StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    private bool CheckHttpMethod(HttpContext context)
+    {
+        if (string.IsNullOrEmpty(HttpMethod))
+            return true;
+
+        return context.Request.Method.Equals(HttpMethod, StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    private bool CheckEndpoint(string endpoint)
+    {
+        if (string.IsNullOrEmpty(Endpoint))
+            return true;
+
+        return endpoint.Equals(Endpoint, StringComparison.InvariantCultureIgnoreCase);
     }
 
     private bool AreParamtersEqualToDeclaredEthalons(HttpRequest request)
