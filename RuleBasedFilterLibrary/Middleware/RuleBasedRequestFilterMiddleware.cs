@@ -1,31 +1,79 @@
 ﻿using Microsoft.AspNetCore.Http;
+using RuleBasedFilterLibrary.Extensions;
+using RuleBasedFilterLibrary.Model.Requests;
 using RuleBasedFilterLibrary.Model.Rules.Base;
 using RuleBasedFilterLibrary.Services;
+using RuleBasedFilterLibrary.Services.DeepAnalysis;
+using System.Web;
 
 namespace RuleBasedFilterLibrary.Middleware;
 
 public class RuleBasedRequestFilterMiddleware(
     RequestDelegate next,
     IRulesLoaderService rulesLoaderService,
-    string configurationFilename)
+    IRequestSequenceAnalyzer requestSequenceAnalyzer,
+    RuleBasedRequestFilterOptions options)
 {
     private readonly RequestDelegate _next = next;
-    private readonly List<RequestRule> _rules = rulesLoaderService.LoadRulesFromConfigurationFile(configurationFilename);
+    private readonly List<RequestRule> _rules = rulesLoaderService.LoadRulesFromConfigurationFile(options.ConfigurationFileName);
 
     public async Task InvokeAsync(HttpContext context)
     {
-        var request = context.Request;
+        var isRequestValid = await ValidateRequest(context);
+
+        if (!isRequestValid)
+        {
+            context.Response.StatusCode = 403;
+            return;
+        }
+
+        await _next(context);
+    }
+
+    public async Task<bool> ValidateRequest(HttpContext context)
+    {
+        var request = ConstructRequestFromContext(context);
+
+        if (options.EnableRequestSequenceValidation)
+            await requestSequenceAnalyzer.IndexRequestAsync(request);
 
         foreach (var rule in _rules)
         {
-            var validationResult = await rule.IsRequestValid(request);
-            if (!validationResult)
+            var validationResult = await rule.IsRequestValid(context);
+
+            if (options.EnableRequestSequenceValidation)
             {
-                context.Response.StatusCode = 403;
-                return;
+                foreach (var parameterRule in rule.ParameterRules)
+                {
+                    if (parameterRule.ComparisonType != Model.Rules.Base.ParameterComparison.ComparisonType.NonMonotous)
+                        continue;
+
+                    var isParameterValid = await requestSequenceAnalyzer.Validate(request, parameterRule);
+                    if (!isParameterValid)
+                        return false;
+                }
             }
+
+            if (!validationResult)
+                return false;
         }
-        
-        await _next(context);
+
+        return true;
+    }
+
+    public static Request ConstructRequestFromContext(HttpContext context)
+    {
+        var userIp = context.Connection.RemoteIpAddress.ToString();
+        var requestTime = DateTime.UtcNow;
+        var parameters = HttpUtility.ParseQueryString(context.Request.QueryString.Value) ?? [];
+
+        var request = new Request
+        {
+            UserIp = userIp,
+            RequestTime = requestTime,
+            Parameters = parameters.ToDictionary()
+        };
+
+        return request;
     }
 }

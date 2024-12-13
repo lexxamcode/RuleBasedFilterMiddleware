@@ -17,7 +17,10 @@ public class RulesLoaderService : IRulesLoaderService
             .Build();
 
         var rawRulesContainer = deserializer.Deserialize<RawRequestRulesContainer>(fileContentAsString);
-        var rules = rawRulesContainer.RequestRules.Select(rule => RequestRuleFactory.CreateRequestRuleFromItsRawRepresentation(rule)).ToList();
+        var rules = rawRulesContainer
+            .RequestRules
+            .Select(RequestRuleFactory.CreateRequestRuleFromItsRawRepresentation)
+            .ToList();
 
         return rules;
     }

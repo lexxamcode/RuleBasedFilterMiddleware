@@ -8,6 +8,11 @@ namespace RuleBasedFilterLibrary.Model.Rules.Base;
 public class RequestParameterRule
 {
     /// <summary>
+    /// Название параметра
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
+
+    /// <summary>
     /// Тип параметра
     /// </summary>
     public Type ParameterType { get; set; } = typeof(object);
@@ -42,7 +47,7 @@ public class RequestParameterRule
         };
     }
 
-    private int CastToIComparableAndCompare(object actualValue, object ethalonValue)
+    private static int CastToIComparableAndCompare(object actualValue, object ethalonValue)
     {
         if (actualValue is not IComparable actualValueAsComparable ||
             ethalonValue is not IComparable ethalonValueAsComparable)

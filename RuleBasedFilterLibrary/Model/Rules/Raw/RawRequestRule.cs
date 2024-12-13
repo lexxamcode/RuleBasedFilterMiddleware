@@ -28,12 +28,7 @@ public class RawRequestRule
     public string AccessPolicy { get; set; } = string.Empty;
 
     /// <summary>
-    /// Логическое выражение для комбинации всех параметров в один фильтр
-    /// </summary>
-    public string ParameterRulesCombination { get; set; } = string.Empty;
-
-    /// <summary>
     /// Правила для отдельных параметров запроса
     /// </summary>
-    public Dictionary<string, RawRequestParameterRule> ParameterRules { get; set; } = [];
+    public List<RawRequestParameterRule> ParameterRules { get; set; } = [];
 }

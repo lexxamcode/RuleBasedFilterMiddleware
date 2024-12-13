@@ -8,7 +8,9 @@ public static class RequestRuleFactory
     public static RequestRule CreateRequestRuleFromItsRawRepresentation(RawRequestRule rawRequestRule)
     {
         var accessPolicy = AccessPolicyFactory.CreateAccessPolicyFromString(rawRequestRule.AccessPolicy);
-        var requestParameterRules = rawRequestRule.ParameterRules.ToDictionary(w => w.Key, w => RequestParameterRuleFactory.CreateFromRawRequestParameterRule(w.Value));
+        var requestParameterRules = rawRequestRule.ParameterRules
+            .Select(parameterRule => RequestParameterRuleFactory.CreateFromRawRequestParameterRule(parameterRule))
+            .ToList();
 
         var requestRule = new RequestRule
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Web;
 
 namespace RuleBasedFilterLibrary.Model.Rules.Base;
 
@@ -35,19 +36,25 @@ public class RequestRule : IRule
     /// <summary>
     /// Правила для отдельных параметров запроса
     /// </summary>
-    public Dictionary<string, RequestParameterRule> ParameterRules { get; set; } = [];
+    public List<RequestParameterRule> ParameterRules { get; set; } = [];
 
-    public virtual Task<bool> IsRequestValid(HttpRequest request)
+    /// <summary>
+    /// Условие комбинации правил
+    /// </summary>
+    public string ParameterRulesCombination { get; set; } = string.Empty;
+
+    public virtual Task<bool> IsRequestValid(HttpContext context)
     {
         var isRequestEthalon = false;
 
-        var clientIp = GetSourceIpFromRequest(request);
-        var enpoint = request.Path.HasValue ? request.Path.Value : string.Empty;
+        var clientIp = context.Connection.RemoteIpAddress.ToString();
+        var enpoint = context.Request.Path.HasValue ? context.Request.Path.Value : string.Empty;
 
         if (clientIp == SourceIp &&
-            HttpMethod.Equals(request.Method, StringComparison.InvariantCultureIgnoreCase) &&
-            Endpoint.Equals(enpoint, StringComparison.InvariantCulture) && 
-            AreParamtersEqualToDeclaredEthalons(request))
+            HttpMethod.Equals(context.Request.Method, StringComparison.InvariantCultureIgnoreCase) &&
+            Endpoint.Equals(enpoint, StringComparison.InvariantCulture) &&
+            SourceIp.Equals(clientIp) &&
+            AreParamtersEqualToDeclaredEthalons(context.Request))
             isRequestEthalon = true;
 
         return AccessPolicy switch
@@ -58,30 +65,21 @@ public class RequestRule : IRule
         };
     }
 
-    private static string GetSourceIpFromRequest(HttpRequest request)
-    {
-        return request.Headers["X-Forwarded-For"].ToString() ??
-            throw new Exception("Could not get X-Forwarded-For header for request");
-    }
-
     private bool AreParamtersEqualToDeclaredEthalons(HttpRequest request)
     {
-        foreach (var requestParameterRuleDictEntry in ParameterRules)
+        foreach (var parameterRule in ParameterRules)
         {
-            var parameterValueAsString = System.Web.HttpUtility
+            var parameterValueAsString = HttpUtility
                 .ParseQueryString(request.QueryString.Value)
-                .Get(requestParameterRuleDictEntry.Key);
-
-            if (parameterValueAsString is null)
+                .Get(parameterRule.Name) ??
                 throw new ArgumentException("Failed to parse request parameter");
 
-            var parameterRule = requestParameterRuleDictEntry.Value;
-            var parameterValidationResult =  parameterRule.CompareTo(parameterValueAsString);
+            var parameterValidationResult = parameterRule.CompareTo(parameterValueAsString);
 
             if (!parameterValidationResult)
                 return false;
         }
-        
+
         return true;
     }
 }

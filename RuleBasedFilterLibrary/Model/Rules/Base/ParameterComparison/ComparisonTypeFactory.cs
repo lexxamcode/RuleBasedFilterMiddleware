@@ -8,7 +8,9 @@ public static class ComparisonTypeFactory
         { ">", ComparisonType.GreaterThan },
         { ">=", ComparisonType.GreaterOrEqualTo },
         { "<", ComparisonType.LessThan },
-        { "<=", ComparisonType.LessOrEqualTo }
+        { "<=", ComparisonType.LessOrEqualTo },
+        { "monotone", ComparisonType.Monotonous },
+        { "non-monotone", ComparisonType.NonMonotous }
     };
 
     public static ComparisonType CreateComparisonTypeFromString(string comparisonExpression)
@@ -16,7 +18,7 @@ public static class ComparisonTypeFactory
         var doesMappingExist = ComparisonTypeMappings.TryGetValue(comparisonExpression, out var mapping);
 
         return doesMappingExist ?
-            mapping : 
+            mapping :
             throw new ArgumentException($"Invalid comparison expression {comparisonExpression}");
     }
 }

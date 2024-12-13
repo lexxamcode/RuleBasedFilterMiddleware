@@ -7,5 +7,7 @@ public enum ComparisonType
     GreaterThan,
     GreaterOrEqualTo,
     LessThan,
-    LessOrEqualTo
+    LessOrEqualTo,
+    Monotonous,
+    NonMonotous
 }

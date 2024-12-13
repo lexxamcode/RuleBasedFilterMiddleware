@@ -3,6 +3,11 @@
 public class RawRequestParameterRule
 {
     /// <summary>
+    /// Имя параметра
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
+
+    /// <summary>
     /// Тип параметра
     /// </summary>
     public string Type { get; set; } = string.Empty;

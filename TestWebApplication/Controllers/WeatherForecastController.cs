@@ -13,7 +13,7 @@ namespace TestWebApplication.Controllers
             return [z, x, y];
         }
 
-        [HttpPost]
+        [HttpPost("SomePostMethod")]
         public async Task<IActionResult> Post()
         {
             logger.LogInformation("POST");
