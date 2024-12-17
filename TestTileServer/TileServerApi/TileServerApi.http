@@ -1,0 +1,6 @@
+@TileServerApi_HostAddress = http://localhost:5279
+
+GET {{TileServerApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,12 @@
+request-rules:
+  - name: geo-download-defence-get-x-rule
+    request-method: get
+    for-endpoint: "/Tiles"
+    access-policy: deny
+    parameter-rules:
+      - name: x
+        type: int
+        should-be: monotone
+      - name: y
+        type: int
+        should-be: monotone

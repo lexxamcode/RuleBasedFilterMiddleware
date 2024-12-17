@@ -16,7 +16,7 @@ public class RequestSequenceAnalyzer(IOpenSearchClient openSearchClient) : IRequ
                                                     .Query(request.UserIp)))
                                             .Sort(sort => sort
                                                 .Descending(fieldName => fieldName.RequestTime))
-                                            .Size(20));
+                                            .Size(100));
         var lastRequestsFromCurrentIpAsList = lastRequestsFromCurrentIp.Documents.ToList();
 
         var isParameterMonotone = IsParameterMonotone(lastRequestsFromCurrentIpAsList, requestParameterRule);
@@ -25,7 +25,7 @@ public class RequestSequenceAnalyzer(IOpenSearchClient openSearchClient) : IRequ
 
     private static bool IsParameterMonotone(List<Request> requestsListSortedByTime, RequestParameterRule requestParameterRule)
     {
-        if (requestsListSortedByTime.Count <= 10)
+        if (requestsListSortedByTime.Count <= 50)
             return false;
 
         var isIncreasing = true;

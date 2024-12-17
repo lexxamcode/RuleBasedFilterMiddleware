@@ -1,4 +1,6 @@
 using RuleBasedFilterLibrary.Extensions;
+using TileServerApi.Model;
+using TileServerApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddRuleBasedRequestFilterServices();
 
+var tilesDirectory = builder.Configuration["Tiles:LocalStoragePath"] ?? string.Empty;
+
+builder.Services.AddSingleton<ITileRepository>(_ => new LocalTileRepository(tilesDirectory));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,10 +25,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 app.UseRuleBasedFilter(new() { EnableRequestSequenceValidation = true });
+app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

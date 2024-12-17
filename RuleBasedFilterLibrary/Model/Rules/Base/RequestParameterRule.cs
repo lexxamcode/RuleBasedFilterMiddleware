@@ -30,7 +30,7 @@ public class RequestParameterRule
     public bool CompareTo(object actualValue)
     {
         if (EthalonValue is null)
-            return true;
+            return false;
 
         var actualValueWithGivenType = Convert.ChangeType(actualValue, ParameterType);
         var ethalonValueWithGivenType = Convert.ChangeType(EthalonValue, ParameterType);
