@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuleBasedFilterLibrary", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebApplication", "TestWebApplication\TestWebApplication.csproj", "{F2173936-465C-4DA9-956E-0342878E8A82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TileServerApi", "TestTileServer\TileServerApi\TileServerApi.csproj", "{217F8FF3-F704-4F50-92E3-2F8D9C56DA23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTileApi", "TestTileApi\TestTileApi.csproj", "{217F8FF3-F704-4F50-92E3-2F8D9C56DA23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

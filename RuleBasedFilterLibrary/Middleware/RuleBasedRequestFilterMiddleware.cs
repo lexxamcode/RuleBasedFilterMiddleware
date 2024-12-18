@@ -40,10 +40,14 @@ public class RuleBasedRequestFilterMiddleware(
 
         foreach (var rule in _rules)
         {
-            var validationResult = await rule.IsRequestValid(context);
+            var isRequestValid = await rule.IsRequestValid(context);
+            if (!isRequestValid)
+                return false;
 
             if (options.EnableRequestSequenceValidation)
             {
+                var brokenRulesCount = 0;
+
                 foreach (var parameterRule in rule.ParameterRules)
                 {
                     if (parameterRule.ComparisonType is not ComparisonType.NonMonotous &&
@@ -52,12 +56,12 @@ public class RuleBasedRequestFilterMiddleware(
 
                     var isParameterValid = await requestSequenceAnalyzer.Validate(request, parameterRule);
                     if (!isParameterValid)
-                        return false;
+                        brokenRulesCount++;
                 }
-            }
 
-            if (!validationResult)
-                return false;
+                if (brokenRulesCount == rule.ParameterRules.Count)
+                    return false;
+            }
         }
 
         return true;

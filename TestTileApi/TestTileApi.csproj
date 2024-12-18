@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="C:\Users\lexxam\source\repos\YmlRulesFileParser\RuleBasedFilterLibrary\RuleBasedFilterLibrary.csproj" />
+    <ProjectReference Include="..\RuleBasedFilterLibrary\RuleBasedFilterLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
