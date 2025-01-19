@@ -8,6 +8,6 @@ public enum ComparisonType
     GreaterOrEqualTo,
     LessThan,
     LessOrEqualTo,
-    Monotonous,
-    NonMonotous
+    Monotone,
+    NonMonotone
 }

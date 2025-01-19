@@ -4,9 +4,6 @@ request-rules:
     for-endpoint: "/Tiles"
     access-policy: deny
     parameter-rules:
-      - name: z
-        type: int
-        should-be: monotone
       - name: x
         type: int
         should-be: monotone

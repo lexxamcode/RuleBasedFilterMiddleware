@@ -36,7 +36,7 @@ public class RequestParameterRule
         var ethalonValueWithGivenType = Convert.ChangeType(EthalonValue, ParameterType);
 
         if (actualValueWithGivenType is null || ethalonValueWithGivenType is null)
-            throw new ArgumentException("actualValue or EthalonValue have invalid type");
+            throw new ArgumentException("actualValue or ethalonValue have invalid type");
 
         return ComparisonType switch
         {
@@ -52,10 +52,10 @@ public class RequestParameterRule
 
     private static int CastToIComparableAndCompare(object actualValue, object ethalonValue)
     {
-        if (actualValue is not IComparable actualValueAsComparable ||
-            ethalonValue is not IComparable ethalonValueAsComparable)
+        if (actualValue is not IComparable actualComparableValue ||
+            ethalonValue is not IComparable ethalonComparableValue)
             throw new ArgumentException("actualValue or ethalonValue are not IComparable");
 
-        return actualValueAsComparable.CompareTo(ethalonValueAsComparable);
+        return actualComparableValue.CompareTo(ethalonComparableValue);
     }
 }

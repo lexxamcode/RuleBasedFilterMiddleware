@@ -49,9 +49,10 @@ public class RequestRule : IRule
 
         var clientIp = context.Connection.RemoteIpAddress.ToString();
         var endpoint = context.Request.Path.HasValue ? context.Request.Path.Value : string.Empty;
+        var httpMethod = context.Request.Method;
 
         if (CheckIpAddress(clientIp) &&
-            CheckHttpMethod(context) &&
+            CheckHttpMethod(httpMethod) &&
             CheckEndpoint(endpoint) &&
             AreParamtersEqualToDeclaredEthalons(context.Request))
             isRequestEthalon = true;
@@ -64,28 +65,18 @@ public class RequestRule : IRule
         };
     }
 
-    private bool CheckIpAddress(string ipAddress)
+    private bool CheckIpAddress(string actualSourceIp) => IsStringEqualToEthalon(SourceIp, actualSourceIp);
+
+    private bool CheckHttpMethod(string actualHttpMethod) => IsStringEqualToEthalon(HttpMethod, actualHttpMethod);
+
+    private bool CheckEndpoint(string actualEndpoint) => IsStringEqualToEthalon(Endpoint, actualEndpoint);
+
+    private static bool IsStringEqualToEthalon(string ethalonString, string actualString)
     {
-        if (string.IsNullOrEmpty(SourceIp))
+        if (string.IsNullOrEmpty(ethalonString))
             return true;
 
-        return ipAddress.Equals(SourceIp, StringComparison.InvariantCultureIgnoreCase);
-    }
-
-    private bool CheckHttpMethod(HttpContext context)
-    {
-        if (string.IsNullOrEmpty(HttpMethod))
-            return true;
-
-        return context.Request.Method.Equals(HttpMethod, StringComparison.InvariantCultureIgnoreCase);
-    }
-
-    private bool CheckEndpoint(string endpoint)
-    {
-        if (string.IsNullOrEmpty(Endpoint))
-            return true;
-
-        return endpoint.Equals(Endpoint, StringComparison.InvariantCultureIgnoreCase);
+        return ethalonString.Equals(actualString, StringComparison.InvariantCultureIgnoreCase);
     }
 
     private bool AreParamtersEqualToDeclaredEthalons(HttpRequest request)

@@ -46,20 +46,9 @@ public class RuleBasedRequestFilterMiddleware(
 
             if (options.EnableRequestSequenceValidation)
             {
-                var brokenRulesCount = 0;
+                var isRequestsSequenceValid = await IsRequestSequenceValid(request, rule);
 
-                foreach (var parameterRule in rule.ParameterRules)
-                {
-                    if (parameterRule.ComparisonType is not ComparisonType.NonMonotous &&
-                        parameterRule.ComparisonType is not ComparisonType.Monotonous)
-                        continue;
-
-                    var isParameterValid = await requestSequenceAnalyzer.Validate(request, parameterRule);
-                    if (!isParameterValid)
-                        brokenRulesCount++;
-                }
-
-                if (brokenRulesCount == rule.ParameterRules.Count)
+                if (!isRequestsSequenceValid)
                     return false;
             }
         }
@@ -81,5 +70,22 @@ public class RuleBasedRequestFilterMiddleware(
         };
 
         return request;
+    }
+
+    private async Task<bool> IsRequestSequenceValid(Request request, RequestRule rule)
+    {
+
+        foreach (var parameterRule in rule.ParameterRules)
+        {
+            if (parameterRule.ComparisonType is not ComparisonType.NonMonotone &&
+                parameterRule.ComparisonType is not ComparisonType.Monotone)
+                continue;
+
+            var isParameterValid = await requestSequenceAnalyzer.Validate(request, parameterRule);
+            if (!isParameterValid)
+                return false;
+        }
+
+        return true;
     }
 }

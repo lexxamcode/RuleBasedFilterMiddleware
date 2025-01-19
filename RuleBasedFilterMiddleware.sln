@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebApplication", "TestW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTileApi", "TestTileApi\TestTileApi.csproj", "{217F8FF3-F704-4F50-92E3-2F8D9C56DA23}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuleBasedFilterLibraryTests", "RuleBasedFilterLibraryTests\RuleBasedFilterLibraryTests.csproj", "{53D29850-7935-4DF4-AC72-E77743B00316}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{217F8FF3-F704-4F50-92E3-2F8D9C56DA23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{217F8FF3-F704-4F50-92E3-2F8D9C56DA23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{217F8FF3-F704-4F50-92E3-2F8D9C56DA23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53D29850-7935-4DF4-AC72-E77743B00316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53D29850-7935-4DF4-AC72-E77743B00316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53D29850-7935-4DF4-AC72-E77743B00316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53D29850-7935-4DF4-AC72-E77743B00316}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
