@@ -10,7 +10,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddRuleBasedRequestFilterServices(RuleBasedRequestFilterOptions.Default);
+
+var options = new RuleBasedRequestFilterOptions
+{
+    EnableRequestSequenceValidation = true
+};
+builder.Services.AddRuleBasedRequestFilterServices(options);
 
 var tilesDirectory = builder.Configuration["Tiles:LocalStoragePath"] ?? string.Empty;
 
@@ -25,7 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseRuleBasedFilter(new() { EnableRequestSequenceValidation = true });
+app.UseRuleBasedFilter();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

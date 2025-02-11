@@ -5,8 +5,8 @@ namespace RuleBasedFilterLibrary.Extensions;
 
 public static class RuleBasedRequestFilterMiddlewareExtensions
 {
-    public static IApplicationBuilder UseRuleBasedFilter(this IApplicationBuilder builder, RuleBasedRequestFilterOptions options)
+    public static IApplicationBuilder UseRuleBasedFilter(this IApplicationBuilder builder)
     {
-        return builder.UseMiddleware<RuleBasedRequestFilterMiddleware>(options);
+        return builder.UseMiddleware<RuleBasedRequestFilterMiddleware>();
     }
 }
