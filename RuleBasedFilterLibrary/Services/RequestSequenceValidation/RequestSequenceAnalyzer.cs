@@ -28,10 +28,10 @@ public class RequestSequenceAnalyzer(IOpenSearchClient openSearchClient) : IRequ
         if (requestsListSortedByTime.Count <= 50)
             return false;
 
-        var isIncreasing = true;
-        var isDecreasing = true;
+        var hasIncreased = false;
+        var hasDecreased = false;
 
-        for (int i = 1; i < requestsListSortedByTime.Count; i++)
+        for (var i = 1; i < requestsListSortedByTime.Count; i++)
         {
             var currentRequest = requestsListSortedByTime[i];
             var currentParameterValueAsString = currentRequest.Parameters[requestParameterRule.Name];
@@ -42,13 +42,13 @@ public class RequestSequenceAnalyzer(IOpenSearchClient openSearchClient) : IRequ
             var previousParameterValueCastedToItsType = Convert.ChangeType(previousParameterValueAsString, requestParameterRule.ParameterType);
 
             if (CastToIComparableAndCompare(currentParameterValueCastedToItsType, previousParameterValueCastedToItsType) > 0)
-                isDecreasing = false;
+                hasIncreased = true;
 
             if (CastToIComparableAndCompare(currentParameterValueCastedToItsType, previousParameterValueCastedToItsType) < 0)
-                isIncreasing = false;
+                hasDecreased = true;
         }
 
-        return isIncreasing || isDecreasing;
+        return !(hasIncreased && hasDecreased);
     }
 
     public async Task<IndexResponse> IndexRequestAsync(Request request)
