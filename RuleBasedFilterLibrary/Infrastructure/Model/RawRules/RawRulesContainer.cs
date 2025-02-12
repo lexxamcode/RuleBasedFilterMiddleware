@@ -2,5 +2,5 @@
 
 public class RawRulesContainer
 {
-    public List<RawRule> RequestRules { get; set; } = [];
+    public List<RawRule> Rules { get; set; } = [];
 }

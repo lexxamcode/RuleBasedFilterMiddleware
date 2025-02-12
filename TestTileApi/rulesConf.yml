@@ -1,15 +1,14 @@
-request-rules:
+rules:
   - name: bulk-download-defence
-    request-method: get
-    for-endpoint: "/Tiles"
+    method: get
+    endpoint: "/Tiles"
     access-policy: deny
-    parameter-rules:
-      - name: z
-        type: int
-        should-be: monotone
-      - name: x
-        type: int
-        should-be: monotone
-      - name: y
-        type: int
-        should-be: monotone
+    sequence-analyses:
+      - analysis-type: NonMonotonicityAnalyzer
+        by-parameters:
+        - name: z
+          type: int
+        - name: x
+          type: int
+        - name: y
+          type: int

@@ -1,4 +1,6 @@
+using RuleBasedFilterLibrary.Core.Services.RequestSequenceAnalysis;
 using RuleBasedFilterLibrary.Extensions;
+using TestTileApi.CustomSequenceAnalyzers;
 using TileServerApi.Model;
 using TileServerApi.Services;
 
@@ -15,7 +17,9 @@ var options = new RuleBasedRequestFilterOptions
 {
     EnableRequestSequenceValidation = true
 };
-builder.Services.AddRuleBasedRequestFilterServices(options);
+builder.Services.AddRuleBasedRequestFilterServices(options)
+    .AddSequenceAnalyzer<MonotonicityAnalyzer>()
+    .AddSequenceAnalyzer<NonMonotonicityAnalyzer>();
 
 var tilesDirectory = builder.Configuration["Tiles:LocalStoragePath"] ?? string.Empty;
 

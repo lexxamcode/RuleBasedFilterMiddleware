@@ -1,4 +1,5 @@
 ﻿using RuleBasedFilterLibrary.Infrastructure.Model.RawParameterRules;
+using RuleBasedFilterLibrary.Infrastructure.Model.RawSequenceAnalyses;
 
 namespace RuleBasedFilterLibrary.Infrastructure.Model.RawRules;
 
@@ -12,12 +13,12 @@ public class RawRule
     /// <summary>
     /// На какой метод распространяется правило
     /// </summary>
-    public string RequestMethod { get; set; } = string.Empty;
+    public string Method { get; set; } = string.Empty;
 
     /// <summary>
     /// Api-метод, на который распространяется правило
     /// </summary>
-    public string ForEndpoint { get; set; } = string.Empty;
+    public string Endpoint { get; set; } = string.Empty;
 
     /// <summary>
     /// Ip-адрес источника запроса
@@ -33,4 +34,6 @@ public class RawRule
     /// Правила для отдельных параметров запроса
     /// </summary>
     public List<RawParameterRule> ParameterRules { get; set; } = [];
+
+    public List<RawSequenceAnalysis> SequenceAnalyses { get; set; } = []; 
 }

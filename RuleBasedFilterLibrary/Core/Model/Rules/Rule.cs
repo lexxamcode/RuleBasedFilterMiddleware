@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using RuleBasedFilterLibrary.Core.Model.AccessPolicies;
 using RuleBasedFilterLibrary.Core.Model.ParameterRules;
+using RuleBasedFilterLibrary.Core.Model.SequenceAnalyses;
 using System.Web;
 
 namespace RuleBasedFilterLibrary.Core.Model.Rules;
@@ -41,6 +42,11 @@ public class Rule : IRule
     public List<ParameterRule> ParameterRules { get; set; } = [];
 
     /// <summary>
+    /// Анализаторы последовательности запросов
+    /// </summary>
+    public List<SequenceAnalysis> SequenceAnalyses { get; set; } = [];
+
+    /// <summary>
     /// Условие комбинации правил
     /// </summary>
     public string ParameterRulesCombination { get; set; } = string.Empty;
@@ -64,6 +70,21 @@ public class Rule : IRule
             AccessPolicy.Deny => Task.FromResult(!isRequestEthalon),
             _ => Task.FromResult(false)
         };
+    }
+
+    public virtual async Task<bool> IsRequestSequenceValid(HttpContext context)
+    {
+        var clientIp = context.Connection.RemoteIpAddress.ToString();
+
+        foreach (var sequenceAnalysis in SequenceAnalyses)
+        {
+            var didAnalysisSucceed = await sequenceAnalysis.Analyse(clientIp);
+
+            if (!didAnalysisSucceed)
+                return false;
+        }
+
+        return true;
     }
 
     private bool CheckIpAddress(string ipAddress)
@@ -92,6 +113,8 @@ public class Rule : IRule
 
     private bool AreParamtersEqualToDeclaredEthalons(HttpRequest request)
     {
+        if (ParameterRules.Count == 0) return false;
+
         var totalBrokenRulesCount = 0;
 
         foreach (var parameterRule in ParameterRules)

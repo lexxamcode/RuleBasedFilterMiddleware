@@ -11,10 +11,9 @@ namespace RuleBasedFilterLibrary.Middleware.Services.RequestValidation;
 
 public class RequestValidationService : IRequestValidationService
 {
-    private readonly List<Rule> _rules = [];
+    private readonly List<IRule> _rules = [];
     private readonly IRulesLoader _rulesLoader;
     private readonly IRequestStorageManager? _requestStorageManager;
-    private readonly IEnumerable<IRequestSequenceAnalyzer>? _requestSequenceAnalyzers;
     private readonly RuleBasedRequestFilterOptions _options;
 
     public RequestValidationService(IRulesLoader rulesLoader, RuleBasedRequestFilterOptions options)
@@ -31,7 +30,6 @@ public class RequestValidationService : IRequestValidationService
         _options = options;
 
         _requestStorageManager = requestStorageManager;
-        _requestSequenceAnalyzers = requestSequenceAnalyzers;
     }
 
     public async Task<bool> IsValidAsync(HttpContext context)
@@ -47,16 +45,12 @@ public class RequestValidationService : IRequestValidationService
             if (!isRequestValid)
                 return false;
 
-            if (_options.EnableRequestSequenceValidation && _requestSequenceAnalyzers is not null)
-            {
-                foreach (var requestSequenceAnalyzer in _requestSequenceAnalyzers)
-                {
-                    var didAnalysisByAllParameterRulesSucceed = await requestSequenceAnalyzer.Analyze(request.UserIp, rule.ParameterRules);
+            if (!_options.EnableRequestSequenceValidation)
+                continue;
 
-                    if (!didAnalysisByAllParameterRulesSucceed)
-                        return false;
-                }
-            }
+            var isRequestSequenceValid = await rule.IsRequestSequenceValid(context);
+            if (!isRequestSequenceValid)
+                return false;
         }
 
         return true;

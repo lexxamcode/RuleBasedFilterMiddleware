@@ -1,3 +1,4 @@
+using RuleBasedFilterLibrary.Core.Services.RequestSequenceAnalysis;
 using RuleBasedFilterLibrary.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddRuleBasedRequestFilterServices(RuleBasedRequestFilterOptions.Default);
+
+builder.Services.AddRuleBasedRequestFilterServices(RuleBasedRequestFilterOptions.Default)
+    .AddSequenceAnalyzer<MonotonicityAnalyzer>();
 
 var app = builder.Build();
 

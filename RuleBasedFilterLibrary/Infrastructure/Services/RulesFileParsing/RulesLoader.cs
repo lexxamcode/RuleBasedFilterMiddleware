@@ -1,14 +1,14 @@
 ﻿using RuleBasedFilterLibrary.Core.Model.Rules;
-using RuleBasedFilterLibrary.Core.Utils;
+using RuleBasedFilterLibrary.Core.Services.RuleFactory;
 using RuleBasedFilterLibrary.Infrastructure.Model.RawRules;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace RuleBasedFilterLibrary.Infrastructure.Services.RulesFileParsing;
 
-public class RulesLoader : IRulesLoader
+public class RulesLoader(IRuleFactory ruleFactory) : IRulesLoader
 {
-    public List<Rule> LoadRulesFromConfigurationFile(string configurationFilename)
+    public List<IRule> LoadRulesFromConfigurationFile(string configurationFilename)
     {
         var fileContentAsString = File.ReadAllText(configurationFilename);
 
@@ -18,8 +18,8 @@ public class RulesLoader : IRulesLoader
 
         var rawRulesContainer = deserializer.Deserialize<RawRulesContainer>(fileContentAsString);
         var rules = rawRulesContainer
-            .RequestRules
-            .Select(RuleFactory.CreateRequestRuleFromItsRawRepresentation)
+            .Rules
+            .Select(ruleFactory.CreateRuleFromItsRawRepresentation)
             .ToList();
 
         return rules;

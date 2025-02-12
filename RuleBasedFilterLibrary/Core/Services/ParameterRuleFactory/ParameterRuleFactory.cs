@@ -1,11 +1,12 @@
 ﻿using RuleBasedFilterLibrary.Core.Model.ParameterRules;
+using RuleBasedFilterLibrary.Core.Utils;
 using RuleBasedFilterLibrary.Infrastructure.Model.RawParameterRules;
 
-namespace RuleBasedFilterLibrary.Core.Utils;
+namespace RuleBasedFilterLibrary.Core.Services.ParameterRuleFactory;
 
-public static class ParameterRuleFactory
+public class ParameterRuleFactory : IParameterRuleFactory
 {
-    public static ParameterRule CreateFromRawRequestParameterRule(RawParameterRule rawRequestParameterRule)
+    public ParameterRule CreateFromRawRequestParameterRule(RawParameterRule rawRequestParameterRule)
     {
         var comparisonExpressionMembers = rawRequestParameterRule.ShouldBe.Split(" ");
         var comparisonTypeString = comparisonExpressionMembers[0];

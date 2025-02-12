@@ -4,5 +4,5 @@ namespace RuleBasedFilterLibrary.Infrastructure.Services.RulesFileParsing;
 
 public interface IRulesLoader
 {
-    public List<Rule> LoadRulesFromConfigurationFile(string configurationFilename);
+    public List<IRule> LoadRulesFromConfigurationFile(string configurationFilename);
 }
