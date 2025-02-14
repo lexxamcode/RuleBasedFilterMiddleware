@@ -6,10 +6,10 @@ request-rules:
     parameter-rules:
       - name: z
         type: int
-        should-be: non-monotone
+        should-be: "< 0"
       - name: x
         type: int
-        should-be: monotone
+        should-be: "== 0"
       - name: y
         type: int
         should-be: "> 0"
