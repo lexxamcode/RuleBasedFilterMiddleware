@@ -10,8 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddRuleBasedRequestFilterServices(RuleBasedRequestFilterOptions.Default)
-    .AddSequenceAnalyzer<MonotonicityAnalyzer>();
+builder.Services.AddRuleBasedRequestFilterServices(RuleBasedRequestFilterOptions.Default);
 
 var app = builder.Build();
 

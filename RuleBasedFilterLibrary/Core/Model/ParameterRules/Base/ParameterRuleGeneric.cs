@@ -1,39 +1,19 @@
-﻿using RuleBasedFilterLibrary.Core.Model.ComparisonTypes;
+﻿using RuleBasedFilterLibrary.Core.Model.Comparison;
 
-namespace RuleBasedFilterLibrary.Core.Model.ParameterRules;
+namespace RuleBasedFilterLibrary.Core.Model.ParameterRules.Base;
 
-/// <summary>
-/// Правило для отдельного параметра
-/// </summary>
-public class ParameterRule
+public class ParameterRuleGeneric<Type> : ParameterRuleBase where Type: IConvertible
 {
-    /// <summary>
-    /// Название параметра
-    /// </summary>
-    public string Name { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Тип параметра
-    /// </summary>
-    public Type ParameterType { get; set; } = typeof(object);
-
-    /// <summary>
-    /// Эталонное значение параметра
-    /// </summary>
-    public object? EthalonValue { get; set; }
-
-    /// <summary>
-    /// Логическое условие для данного параметра
-    /// </summary>
+    public Type? EthalonValue { get; set; }
     public ComparisonType ComparisonType { get; set; }
 
-    public bool CompareTo(object actualValue)
+    public override bool CompareTo(string actualParameterValue)
     {
         if (EthalonValue is null)
             return false;
 
-        var actualValueWithGivenType = Convert.ChangeType(actualValue, ParameterType);
-        var ethalonValueWithGivenType = Convert.ChangeType(EthalonValue, ParameterType);
+        var actualValueWithGivenType = Convert.ChangeType(actualParameterValue, typeof(Type));
+        var ethalonValueWithGivenType = Convert.ChangeType(EthalonValue, typeof(Type));
 
         if (actualValueWithGivenType is null || ethalonValueWithGivenType is null)
             throw new ArgumentException("actualValue or EthalonValue have invalid type");
@@ -50,7 +30,7 @@ public class ParameterRule
         };
     }
 
-    private static int CastToIComparableAndCompare(object actualValue, object ethalonValue)
+    protected virtual int CastToIComparableAndCompare(object actualValue, object ethalonValue)
     {
         if (actualValue is not IComparable actualValueAsComparable ||
             ethalonValue is not IComparable ethalonValueAsComparable)

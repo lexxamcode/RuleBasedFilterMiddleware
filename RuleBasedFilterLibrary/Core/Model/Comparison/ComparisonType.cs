@@ -1,4 +1,4 @@
-﻿namespace RuleBasedFilterLibrary.Core.Model.ComparisonTypes;
+﻿namespace RuleBasedFilterLibrary.Core.Model.Comparison;
 
 public enum ComparisonType
 {

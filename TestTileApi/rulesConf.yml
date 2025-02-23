@@ -4,7 +4,7 @@ rules:
     endpoint: "/Tiles"
     access-policy: deny
     sequence-analyses:
-      - analysis-type: NonMonotonicityAnalyzer
+      - analysis-type: MonotonicityAnalyzer
         by-parameters:
         - name: z
           type: int
