@@ -1,7 +1,7 @@
-request-rules:
+rules:
   - name: geo-download-defence-get-x-rule
-    request-method: get
-    for-endpoint: "/WeatherForecast"
+    method: get
+    endpoint: "/WeatherForecast/GetWeatherForecast"
     access-policy: deny
     parameter-rules:
       - name: z
@@ -14,7 +14,15 @@ request-rules:
         type: int
         should-be: "> 0"
   - name: geo-download-defence-post
-    request-method: post
-    for-endpoint: "/WeatherForecast/SomePostMethod"
+    method: post
+    endpoint: "/WeatherForecast/SomePostMethod"
     source-ip: "::1"
     access-policy: deny
+  - name: restrict-get-pi
+    method: get
+    endpoint: "/WeatherForecast/Pi"
+    access-policy: allow
+    parameter-rules:
+      - name: argument
+        type: double
+        should-be: ">= 3,14"

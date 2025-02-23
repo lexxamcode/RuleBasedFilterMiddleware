@@ -1,5 +1,4 @@
-﻿using RuleBasedFilterLibrary.Core.Model.ComparisonTypes;
-using RuleBasedFilterLibrary.Core.Model.ParameterRules;
+﻿using RuleBasedFilterLibrary.Core.Model.Comparison;
 using RuleBasedFilterLibrary.Core.Model.SequenceAnalyses;
 using RuleBasedFilterLibrary.Core.Services.RequestSequenceValidation;
 using RuleBasedFilterLibrary.Extensions;

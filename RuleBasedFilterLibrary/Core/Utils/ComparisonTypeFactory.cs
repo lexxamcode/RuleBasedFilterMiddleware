@@ -1,4 +1,4 @@
-﻿using RuleBasedFilterLibrary.Core.Model.ComparisonTypes;
+﻿using RuleBasedFilterLibrary.Core.Model.Comparison;
 
 namespace RuleBasedFilterLibrary.Core.Utils;
 

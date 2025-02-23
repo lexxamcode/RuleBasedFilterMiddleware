@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using RuleBasedFilterLibrary.Core.Model.AccessPolicies;
-using RuleBasedFilterLibrary.Core.Model.ParameterRules;
+using RuleBasedFilterLibrary.Core.Model.ParameterRules.Base;
 using RuleBasedFilterLibrary.Core.Model.SequenceAnalyses;
 using System.Web;
 
@@ -39,7 +39,7 @@ public class Rule : IRule
     /// <summary>
     /// Правила для отдельных параметров запроса
     /// </summary>
-    public List<ParameterRule> ParameterRules { get; set; } = [];
+    public List<ParameterRuleBase> ParameterRules { get; set; } = [];
 
     /// <summary>
     /// Анализаторы последовательности запросов
@@ -58,11 +58,14 @@ public class Rule : IRule
         var clientIp = context.Connection.RemoteIpAddress.ToString();
         var endpoint = context.Request.Path.HasValue ? context.Request.Path.Value : string.Empty;
 
-        if (CheckIpAddress(clientIp) &&
-            CheckHttpMethod(context) &&
-            CheckEndpoint(endpoint) &&
-            AreParamtersEqualToDeclaredEthalons(context.Request))
+        if (!CheckEndpoint(endpoint))
+            return Task.FromResult(true);
+
+        if (CheckIpAddress(clientIp) && CheckHttpMethod(context))
             isRequestEthalon = true;
+
+        if (ParameterRules.Count > 0)
+            isRequestEthalon = isRequestEthalon && AreParamtersEqualToDeclaredEthalons(context.Request);
 
         return AccessPolicy switch
         {
@@ -113,7 +116,7 @@ public class Rule : IRule
 
     private bool AreParamtersEqualToDeclaredEthalons(HttpRequest request)
     {
-        if (ParameterRules.Count == 0) return false;
+        if (ParameterRules.Count == 0) return true;
 
         var totalBrokenRulesCount = 0;
 
