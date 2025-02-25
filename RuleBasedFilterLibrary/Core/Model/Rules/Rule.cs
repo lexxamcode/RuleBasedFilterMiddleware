@@ -39,7 +39,7 @@ public class Rule : IRule
     /// <summary>
     /// Правила для отдельных параметров запроса
     /// </summary>
-    public List<ParameterRuleBase> ParameterRules { get; set; } = [];
+    public List<IParameterRule> ParameterRules { get; set; } = [];
 
     /// <summary>
     /// Анализаторы последовательности запросов

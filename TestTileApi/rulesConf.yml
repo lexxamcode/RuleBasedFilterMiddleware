@@ -2,9 +2,19 @@ rules:
   - name: bulk-download-defence
     method: get
     endpoint: "/Tiles"
-    access-policy: deny
+    access-policy: allow
+    parameter-rules:
+      - name: z
+        type: int
+        should-be: "> 5"
+      - name: x
+        type: int
+        should-be: "between -1 and 1"
+      - name: y
+        type: int
+        should-be: "between -1 and 1"
     sequence-analyses:
-      - analysis-type: MonotonicityAnalyzer
+      - analysis-type: NonMonotonicityAnalyzer
         by-parameters:
         - name: z
           type: int
