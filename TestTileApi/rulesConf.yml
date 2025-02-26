@@ -2,10 +2,26 @@ rules:
   - name: bulk-download-defence
     method: get
     endpoint: "/Tiles"
-    access-policy: deny
+    access-policy: allow
+    argument-rules:
+      - name: z-restrict
+        type: default
+        argument-name: z
+        argument-type: int
+        argument-should-be: "> 0"
+      - name: x-restrict
+        type: longitude
+        argument-name: x
+        argument-type: int
+        argument-should-be: "between -10.019531 54.492188"
+      - name: y-restruct
+        type: latitude
+        argument-name: y
+        argument-type: int
+        argument-should-be: "between 28.149503 66.998844"
     sequence-analyses:
-      - analysis-type: MonotonicityAnalyzer
-        by-parameters:
+      - analysis-type: NonMonotonicityAnalyzer
+        by-arguments:
         - name: z
           type: int
         - name: x

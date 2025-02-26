@@ -5,5 +5,5 @@ namespace RuleBasedFilterLibrary.Core.Services.ParameterRuleFactory;
 
 public interface IParameterRuleFactory
 {
-    public ParameterRuleBase CreateFromRawRequestParameterRule(RawParameterRule rawRequestParameterRule);
+    public IParameterRule CreateFromRawRequestParameterRule(RawParameterRule rawRequestParameterRule);
 }

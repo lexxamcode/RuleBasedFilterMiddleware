@@ -1,40 +1,23 @@
-﻿using RuleBasedFilterLibrary.Core.Model.ParameterRules.Base;
-using RuleBasedFilterLibrary.Core.Model.ParameterRules.Implementations;
-using RuleBasedFilterLibrary.Core.Utils;
+﻿using RuleBasedFilterLibrary.Core.Model.ParameterRules;
+using RuleBasedFilterLibrary.Core.Model.ParameterRules.Base;
+using RuleBasedFilterLibrary.Core.Services.Expression;
 using RuleBasedFilterLibrary.Infrastructure.Model.RawParameterRules;
 
 namespace RuleBasedFilterLibrary.Core.Services.ParameterRuleFactory;
 
 public class ParameterRuleFactory : IParameterRuleFactory
 {
-    public ParameterRuleBase CreateFromRawRequestParameterRule(RawParameterRule rawRequestParameterRule)
+    private static readonly Dictionary<string, Func<RawParameterRule, IParameterRule>> _parameterRules = new()
     {
-        var comparisonExpressionMembers = rawRequestParameterRule.ShouldBe.Split(" ");
-        var comparisonTypeString = comparisonExpressionMembers[0];
-        var ethalonValueString = comparisonExpressionMembers[1];
+        { "latitude", (rawParameterRule) => LatitudeParameterRuleFactory.Create(rawParameterRule) },
+        { "longitude", (rawParameterRule) => LongitudeParameterRuleFactory.Create(rawParameterRule) }
+    };
 
-        if (string.IsNullOrEmpty(comparisonTypeString))
-            throw new Exception($"Invalid comparisonType in {rawRequestParameterRule.ShouldBe}");
+    public IParameterRule CreateFromRawRequestParameterRule(RawParameterRule rawRequestParameterRule)
+    {
+        if (_parameterRules.TryGetValue(rawRequestParameterRule.Type, out var creator))
+            return creator(rawRequestParameterRule);
 
-        var parameterType = rawRequestParameterRule.Type;
-        var comparisonType = ComparisonTypeFactory.CreateComparisonTypeFromString(comparisonTypeString);
-
-        return parameterType switch
-        {
-            "decimal" => new ParameterRuleGeneric<decimal> { Name = rawRequestParameterRule.Name, EthalonValue = decimal.Parse(ethalonValueString), ComparisonType = comparisonType },
-            "long" => new ParameterRuleGeneric<long> { Name = rawRequestParameterRule.Name, EthalonValue = long.Parse(ethalonValueString), ComparisonType = comparisonType },
-            "double" => new DoubleParameterRule { Name = rawRequestParameterRule.Name, EthalonValue = double.Parse(ethalonValueString), ComparisonType = comparisonType },
-            "float" => new ParameterRuleGeneric<float> { Name = rawRequestParameterRule.Name, EthalonValue = float.Parse(ethalonValueString), ComparisonType = comparisonType },
-            "int" => new ParameterRuleGeneric<int>() { Name = rawRequestParameterRule.Name, EthalonValue = int.Parse(ethalonValueString), ComparisonType = comparisonType },
-            "integer" => new ParameterRuleGeneric<int>() { Name = rawRequestParameterRule.Name, EthalonValue = int.Parse(ethalonValueString), ComparisonType = comparisonType },
-            "char" => new ParameterRuleGeneric<char> { Name = rawRequestParameterRule.Name, EthalonValue = char.Parse(ethalonValueString), ComparisonType = comparisonType },
-            "byte" => new ParameterRuleGeneric<byte> { Name = rawRequestParameterRule.Name, EthalonValue = byte.Parse(ethalonValueString), ComparisonType = comparisonType },
-            "short" => new ParameterRuleGeneric<short> { Name = rawRequestParameterRule.Name, EthalonValue = short.Parse(ethalonValueString), ComparisonType = comparisonType },
-            "bool" => new ParameterRuleGeneric<bool> { Name = rawRequestParameterRule.Name, EthalonValue = bool.Parse(ethalonValueString), ComparisonType = comparisonType },
-            "boolean" => new ParameterRuleGeneric<bool> { Name = rawRequestParameterRule.Name, EthalonValue = bool.Parse(ethalonValueString), ComparisonType = comparisonType },
-            "string" => new ParameterRuleGeneric<string> { Name = rawRequestParameterRule.Name, EthalonValue = ethalonValueString, ComparisonType = comparisonType },
-
-            _ => throw new Exception($"Parameter type {parameterType} unknown")
-        };
+        return DefaultParameterRuleFactory.Create(rawRequestParameterRule);
     }
 }

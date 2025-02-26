@@ -3,5 +3,5 @@
 public class RawSequenceAnalysis
 {
     public string AnalysisType { get; set; } = string.Empty;
-    public List<RawSequenceAnalysisParameter> ByParameters { get; set; } = [];
+    public List<RawSequenceAnalysisParameter> ByArguments { get; set; } = [];
 }

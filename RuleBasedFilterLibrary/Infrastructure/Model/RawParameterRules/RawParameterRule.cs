@@ -3,22 +3,27 @@
 public class RawParameterRule
 {
     /// <summary>
-    /// Имя параметра
+    /// Имя правила для параметра
     /// </summary>
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// Тип параметра
+    /// Тип правила для параметра
     /// </summary>
     public string Type { get; set; } = string.Empty;
 
     /// <summary>
-    /// Эталонное значение параметра
+    /// Имя параметра
     /// </summary>
-    public string Value { get; set; } = string.Empty;
+    public string ArgumentName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Тип параметра
+    /// </summary>
+    public string ArgumentType { get; set; } = string.Empty;
 
     /// <summary>
     /// Логическое условие для данного параметра
     /// </summary>
-    public string ShouldBe { get; set; } = string.Empty;
+    public string ArgumentShouldBe { get; set; } = string.Empty;
 }
