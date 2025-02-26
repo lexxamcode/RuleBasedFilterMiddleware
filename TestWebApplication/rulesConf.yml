@@ -3,16 +3,22 @@ rules:
     method: get
     endpoint: "/WeatherForecast/GetWeatherForecast"
     access-policy: deny
-    parameter-rules:
-      - name: z
-        type: int
-        should-be: "< 0"
-      - name: x
-        type: int
-        should-be: "== 0"
-      - name: y
-        type: int
-        should-be: "> 0"
+    argument-rules:
+      - name: restrict-z-less-than-zero
+        type: default
+        argument-name: z
+        argument-type: int
+        argument-should-be: "< 0"
+      - name: restrict-x-zero
+        type: default
+        argument-name: x
+        argument-type: int
+        argument-should-be: "== 0"
+      - name: restrict-greater-than-zero
+        type: default
+        argument-name: y
+        argument-type: int
+        argument-should-be: "> 0"
   - name: geo-download-defence-post
     method: post
     endpoint: "/WeatherForecast/SomePostMethod"
@@ -22,7 +28,9 @@ rules:
     method: get
     endpoint: "/WeatherForecast/Pi"
     access-policy: allow
-    parameter-rules:
-      - name: argument
-        type: double
-        should-be: ">= 3,14"
+    argument-rules:
+      - name: restrict-pi
+        type: default
+        argument-name: argument
+        argument-type: double
+        argument-should-be: ">= 3,14"
