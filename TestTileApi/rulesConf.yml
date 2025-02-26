@@ -6,13 +6,13 @@ rules:
     parameter-rules:
       - name: z
         type: int
-        should-be: "> 5"
+        should-be: "> 4"
       - name: x
         type: int
-        should-be: "between -1 and 1"
+        should-be: "between -10 10"
       - name: y
         type: int
-        should-be: "between -1 and 1"
+        should-be: "between -20 10"
     sequence-analyses:
       - analysis-type: NonMonotonicityAnalyzer
         by-parameters:

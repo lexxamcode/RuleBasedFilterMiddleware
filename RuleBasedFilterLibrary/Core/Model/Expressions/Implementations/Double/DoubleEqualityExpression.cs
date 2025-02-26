@@ -1,6 +1,6 @@
 ﻿namespace RuleBasedFilterLibrary.Core.Model.Expressions.Implementations.Double;
 
-public class DoubleEqualityExpresion(double ethalonValue) : DoubleExpressionBase, IExpression
+public class DoubleEqualityExpression(double ethalonValue) : DoubleExpressionBase, IExpression
 {
     public bool MatchesExpression(string actualValue)
     {

@@ -1,6 +1,6 @@
 ﻿namespace RuleBasedFilterLibrary.Core.Model.Expressions.Implementations.Float;
 
-public class FloatEqualityExpresion(float ethalonValue) : FloatExpressionBase, IExpression
+public class FloatEqualityExpression(float ethalonValue) : FloatExpressionBase, IExpression
 {
     public bool MatchesExpression(string actualValue)
     {
