@@ -1,11 +1,4 @@
-﻿using RuleBasedFilterLibrary.Core.Model.Comparison;
-using RuleBasedFilterLibrary.Core.Model.Expressions;
-using RuleBasedFilterLibrary.Core.Model.Expressions.Implementations.Double;
-using RuleBasedFilterLibrary.Core.Model.Expressions.Implementations.DoubleInterval;
-using RuleBasedFilterLibrary.Core.Model.Expressions.Implementations.Float;
-using RuleBasedFilterLibrary.Core.Model.Expressions.Implementations.FloatInterval;
-using RuleBasedFilterLibrary.Core.Model.Expressions.Implementations.Generic;
-using RuleBasedFilterLibrary.Core.Model.Expressions.Implementations.String;
+﻿using RuleBasedFilterLibrary.Core.Model.Expressions;
 using RuleBasedFilterLibrary.Core.Services.Expression.DoubleExpressions;
 using RuleBasedFilterLibrary.Core.Services.Expression.FloatExpressions;
 using RuleBasedFilterLibrary.Core.Services.Expression.StringExpressions;

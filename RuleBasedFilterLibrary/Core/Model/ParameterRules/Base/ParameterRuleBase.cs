@@ -3,5 +3,6 @@
 public abstract class ParameterRuleBase : IParameterRule
 {
     public required string Name { get; set; }
-    public abstract bool CompareTo(string actualParameterValue);
+    public required string ArgumentName { get; set; }
+    public abstract bool Validate(Dictionary<string, string> arguments);
 }

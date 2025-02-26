@@ -3,5 +3,5 @@
 public interface IParameterRule
 {
     public string Name { get; set; }
-    public bool CompareTo(string actualParameterValue);
+    public bool Validate(Dictionary<string, string> arguments);
 }

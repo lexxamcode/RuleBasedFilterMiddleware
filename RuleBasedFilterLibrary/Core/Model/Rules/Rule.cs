@@ -2,6 +2,7 @@
 using RuleBasedFilterLibrary.Core.Model.AccessPolicies;
 using RuleBasedFilterLibrary.Core.Model.ParameterRules.Base;
 using RuleBasedFilterLibrary.Core.Model.SequenceAnalyses;
+using RuleBasedFilterLibrary.Extensions;
 using System.Web;
 
 namespace RuleBasedFilterLibrary.Core.Model.Rules;
@@ -39,7 +40,7 @@ public class Rule : IRule
     /// <summary>
     /// Правила для отдельных параметров запроса
     /// </summary>
-    public List<IParameterRule> ParameterRules { get; set; } = [];
+    public List<IParameterRule> ArgumentRules { get; set; } = [];
 
     /// <summary>
     /// Анализаторы последовательности запросов
@@ -64,7 +65,7 @@ public class Rule : IRule
         if (CheckIpAddress(clientIp) && CheckHttpMethod(context))
             isRequestEthalon = true;
 
-        if (ParameterRules.Count > 0)
+        if (ArgumentRules.Count > 0)
             isRequestEthalon = isRequestEthalon && AreParamtersEqualToDeclaredEthalons(context.Request);
 
         return AccessPolicy switch
@@ -116,24 +117,21 @@ public class Rule : IRule
 
     private bool AreParamtersEqualToDeclaredEthalons(HttpRequest request)
     {
-        if (ParameterRules.Count == 0) return true;
+        if (ArgumentRules.Count == 0) return true;
 
         var totalBrokenRulesCount = 0;
 
-        foreach (var parameterRule in ParameterRules)
+        foreach (var parameterRule in ArgumentRules)
         {
-            var parameterValueAsString = HttpUtility
-                .ParseQueryString(request.QueryString.Value)
-                .Get(parameterRule.Name) ??
-                throw new ArgumentException("Failed to parse request parameter");
+            var currentArguments = HttpUtility.ParseQueryString(request.QueryString.Value).ToDictionary();
 
-            var parameterValidationResult = parameterRule.CompareTo(parameterValueAsString);
+            var parameterValidationResult = parameterRule.Validate(currentArguments);
 
             if (parameterValidationResult)
                 totalBrokenRulesCount++;
         }
 
-        if (totalBrokenRulesCount == ParameterRules.Count)
+        if (totalBrokenRulesCount == ArgumentRules.Count)
             return true;
 
         return false;

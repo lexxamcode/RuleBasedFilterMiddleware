@@ -3,19 +3,25 @@ rules:
     method: get
     endpoint: "/Tiles"
     access-policy: allow
-    parameter-rules:
-      - name: z
-        type: int
-        should-be: "> 4"
-      - name: x
-        type: int
-        should-be: "between -10 10"
-      - name: y
-        type: int
-        should-be: "between -20 10"
+    argument-rules:
+      - name: z-restrict
+        type: default
+        argument-name: z
+        argument-type: int
+        argument-should-be: "> 0"
+      - name: x-restrict
+        type: longitude
+        argument-name: x
+        argument-type: int
+        argument-should-be: "between -10.019531 54.492188"
+      - name: y-restruct
+        type: latitude
+        argument-name: y
+        argument-type: int
+        argument-should-be: "between 28.149503 66.998844"
     sequence-analyses:
       - analysis-type: NonMonotonicityAnalyzer
-        by-parameters:
+        by-arguments:
         - name: z
           type: int
         - name: x
