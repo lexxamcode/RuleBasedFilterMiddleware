@@ -19,7 +19,8 @@ var options = new RuleBasedRequestFilterOptions
 };
 builder.Services.AddRuleBasedRequestFilterServices(options)
     .AddSequenceAnalyzer<MonotonicityAnalyzer>()
-    .AddSequenceAnalyzer<NonMonotonicityAnalyzer>();
+    .AddSequenceAnalyzer<NonMonotonicityAnalyzer>()
+    .AddSequenceAnalyzer<NonRandomSequenceAnalyzer>();
 
 var tilesDirectory = builder.Configuration["Tiles:LocalStoragePath"] ?? string.Empty;
 
