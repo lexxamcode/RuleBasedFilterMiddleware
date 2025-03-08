@@ -15,7 +15,7 @@ public class SequenceAnalysisFactory(IServiceProvider serviceProvider, IParamter
 
         var sequenceAnalysis = new SequenceAnalysis(sequenceAnalyzer)
         {
-            Parameters = rawSequenceAnalysis.ByParameters.Select(paramterSequenceAnalysisFactory.CreateFromRawParameterSequenceAnalysis).ToList()
+            Parameters = rawSequenceAnalysis.ByArguments.Select(paramterSequenceAnalysisFactory.CreateFromRawParameterSequenceAnalysis).ToList()
         };
 
         return sequenceAnalysis;

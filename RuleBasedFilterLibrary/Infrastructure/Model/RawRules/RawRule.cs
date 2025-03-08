@@ -33,7 +33,7 @@ public class RawRule
     /// <summary>
     /// Правила для отдельных параметров запроса
     /// </summary>
-    public List<RawParameterRule> ParameterRules { get; set; } = [];
+    public List<RawParameterRule> ArgumentRules { get; set; } = [];
 
     public List<RawSequenceAnalysis> SequenceAnalyses { get; set; } = []; 
 }
