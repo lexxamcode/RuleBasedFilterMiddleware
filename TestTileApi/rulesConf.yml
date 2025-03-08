@@ -20,10 +20,13 @@ rules:
         argument-type: int
         argument-should-be: "between 28.149503 66.998844"
     sequence-analyses:
+      - analysis-type: NonRandomSequenceAnalyzer
+        by-arguments:
+        - name: x
+          type: int
+        - name: y
       - analysis-type: NonMonotonicityAnalyzer
         by-arguments:
-        - name: z
-          type: int
         - name: x
           type: int
         - name: y
