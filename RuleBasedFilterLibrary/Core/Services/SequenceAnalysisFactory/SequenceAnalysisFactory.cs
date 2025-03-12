@@ -8,7 +8,7 @@ namespace RuleBasedFilterLibrary.Core.Services.SequenceAnalysisFactory;
 
 public class SequenceAnalysisFactory(IServiceProvider serviceProvider, IParamterSequenceAnalysisFactory paramterSequenceAnalysisFactory): ISequenceAnalysisFactory
 {
-    public SequenceAnalysis CreateFromRawSequenceAnalysis(RawSequenceAnalysis rawSequenceAnalysis)
+    public ISequenceAnalysis CreateFromRawSequenceAnalysis(RawSequenceAnalysis rawSequenceAnalysis)
     {
         var sequenceAnalysers = serviceProvider.GetServices<IRequestSequenceAnalyzer>();
         var sequenceAnalyzer = sequenceAnalysers.Single(analyzer => analyzer.GetType().Name == rawSequenceAnalysis.AnalysisType);

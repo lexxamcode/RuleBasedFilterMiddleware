@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using RuleBasedFilterLibrary.Core.Model.Requests;
 using RuleBasedFilterLibrary.Core.Model.Rules;
-using RuleBasedFilterLibrary.Core.Services.RequestSequenceValidation;
 using RuleBasedFilterLibrary.Core.Services.RequestStorageManager;
 using RuleBasedFilterLibrary.Extensions;
 using RuleBasedFilterLibrary.Infrastructure.Services.RulesFileParsing;
@@ -23,7 +22,8 @@ public class RequestValidationService : IRequestValidationService
         _options = options;
     }
 
-    public RequestValidationService(IRulesLoader rulesLoader, IRequestStorageManager requestStorageManager, IEnumerable<IRequestSequenceAnalyzer> requestSequenceAnalyzers, RuleBasedRequestFilterOptions options)
+    public RequestValidationService(IRulesLoader rulesLoader, IRequestStorageManager requestStorageManager,
+        RuleBasedRequestFilterOptions options)
     {
         _rulesLoader = rulesLoader;
         _rules = _rulesLoader.LoadRulesFromConfigurationFile(options.ConfigurationFileName);

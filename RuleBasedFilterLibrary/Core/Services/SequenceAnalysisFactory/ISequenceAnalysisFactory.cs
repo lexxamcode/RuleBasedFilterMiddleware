@@ -5,5 +5,5 @@ namespace RuleBasedFilterLibrary.Core.Services.SequenceAnalysisFactory;
 
 public interface ISequenceAnalysisFactory
 {
-    public SequenceAnalysis CreateFromRawSequenceAnalysis(RawSequenceAnalysis rawSequenceAnalysis);
+    public ISequenceAnalysis CreateFromRawSequenceAnalysis(RawSequenceAnalysis rawSequenceAnalysis);
 }

@@ -1,14 +1,14 @@
 ﻿using OpenSearch.Client;
 using RuleBasedFilterLibrary.Core.Model.Requests;
-using RuleBasedFilterLibrary.Infrastructure.Services.RequestsStorage;
+using RuleBasedFilterLibrary.Infrastructure.Services.RequestStorage;
 
 namespace RuleBasedFilterLibrary.Core.Services.RequestStorageManager;
 
 public class RequestStorageManager(IRequestStorage requestStorage) : IRequestStorageManager
 {
-    public async Task<IndexResponse> AddAsync(Request request)
+    public async Task AddAsync(Request request)
     {
-        return await requestStorage.AddAsync(request);
+        await requestStorage.AddAsync(request);
     }
 
     public async Task<List<Request>> GetRequestsOfUserAsync(string userIp)

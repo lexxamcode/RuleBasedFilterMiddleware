@@ -1,21 +1,21 @@
 ﻿using RuleBasedFilterLibrary.Core.Model.SequenceAnalyses;
 using RuleBasedFilterLibrary.Core.Services.RequestSequenceValidation;
 using RuleBasedFilterLibrary.Extensions;
-using RuleBasedFilterLibrary.Infrastructure.Services.RequestsStorage;
+using RuleBasedFilterLibrary.Infrastructure.Services.RequestStorage;
 
 namespace TestTileApi.CustomSequenceAnalyzers;
 
 public class NonMonotonicityAnalyzer(IRequestStorage requestStorage, RuleBasedRequestFilterOptions options) : IRequestSequenceAnalyzer
 {
-    public async Task<bool> Analyze(string userIp, List<ParameterSequenceAnalysis> parameterRules)
+    public async Task<bool> DidAnalysisSucceed(string userIp, List<ParameterSequenceAnalysis> parameterRules)
     {
         var brokenRulesCount = 0;
 
         foreach (var parameterRule in parameterRules)
         {
             var requests = await requestStorage.GetRequestsOfUserAsync(userIp);
-            var isParameterMonotone = await AnalyzeUserRequestsByParameterAsync(userIp, parameterRule);
-            if (!isParameterMonotone)
+            var isParameterRequestedMonotonously = await IsParameterRequestedMonotonously(userIp, parameterRule);
+            if (isParameterRequestedMonotonously)
                 brokenRulesCount++;
         }
 
@@ -25,7 +25,7 @@ public class NonMonotonicityAnalyzer(IRequestStorage requestStorage, RuleBasedRe
         return true;
     }
 
-    private async Task<bool> AnalyzeUserRequestsByParameterAsync(string userIp, ParameterSequenceAnalysis requestParameterRule)
+    private async Task<bool> IsParameterRequestedMonotonously(string userIp, ParameterSequenceAnalysis requestParameterRule)
     {
         var requests = await requestStorage.GetRequestsOfUserAsync(userIp);
 
