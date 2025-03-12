@@ -44,7 +44,7 @@ public class Rule : IRule
     /// <summary>
     /// Анализаторы последовательности запросов
     /// </summary>
-    public List<SequenceAnalysis> SequenceAnalyses { get; set; } = [];
+    public List<ISequenceAnalysis> SequenceAnalyses { get; set; } = [];
 
     /// <summary>
     /// Условие комбинации правил
@@ -58,11 +58,14 @@ public class Rule : IRule
         var clientIp = context.Connection.RemoteIpAddress.ToString();
         var endpoint = context.Request.Path.HasValue ? context.Request.Path.Value : string.Empty;
 
-        if (!CheckEndpoint(endpoint))
-            return Task.FromResult(true);
-
-        if (CheckIpAddress(clientIp) && CheckHttpMethod(context))
+        if (DidEndpointMatch(endpoint))
             isRequestEthalon = true;
+
+        if (!string.IsNullOrEmpty(SourceIp))
+            isRequestEthalon = isRequestEthalon && clientIp.Equals(SourceIp, StringComparison.InvariantCultureIgnoreCase);
+
+        if (!string.IsNullOrEmpty(HttpMethod))
+            isRequestEthalon = isRequestEthalon && context.Request.Method.Equals(HttpMethod, StringComparison.InvariantCultureIgnoreCase);
 
         if (ParameterRules.Count > 0)
             isRequestEthalon = isRequestEthalon && AreParamtersEqualToDeclaredEthalons(context.Request);
@@ -81,7 +84,7 @@ public class Rule : IRule
 
         foreach (var sequenceAnalysis in SequenceAnalyses)
         {
-            var didAnalysisSucceed = await sequenceAnalysis.Analyse(clientIp);
+            var didAnalysisSucceed = await sequenceAnalysis.DidAnalysisSucceed(clientIp);
 
             if (!didAnalysisSucceed)
                 return false;
@@ -90,34 +93,13 @@ public class Rule : IRule
         return true;
     }
 
-    private bool CheckIpAddress(string ipAddress)
+    private bool DidEndpointMatch(string endpoint)
     {
-        if (string.IsNullOrEmpty(SourceIp))
-            return true;
-
-        return ipAddress.Equals(SourceIp, StringComparison.InvariantCultureIgnoreCase);
-    }
-
-    private bool CheckHttpMethod(HttpContext context)
-    {
-        if (string.IsNullOrEmpty(HttpMethod))
-            return true;
-
-        return context.Request.Method.Equals(HttpMethod, StringComparison.InvariantCultureIgnoreCase);
-    }
-
-    private bool CheckEndpoint(string endpoint)
-    {
-        if (string.IsNullOrEmpty(Endpoint))
-            return true;
-
         return endpoint.Equals(Endpoint, StringComparison.InvariantCultureIgnoreCase);
     }
 
     private bool AreParamtersEqualToDeclaredEthalons(HttpRequest request)
     {
-        if (ParameterRules.Count == 0) return true;
-
         var totalBrokenRulesCount = 0;
 
         foreach (var parameterRule in ParameterRules)

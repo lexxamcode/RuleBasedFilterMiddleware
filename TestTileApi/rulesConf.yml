@@ -2,7 +2,7 @@ rules:
   - name: bulk-download-defence
     method: get
     endpoint: "/Tiles"
-    access-policy: deny
+    access-policy: allow
     sequence-analyses:
       - analysis-type: MonotonicityAnalyzer
         by-parameters:

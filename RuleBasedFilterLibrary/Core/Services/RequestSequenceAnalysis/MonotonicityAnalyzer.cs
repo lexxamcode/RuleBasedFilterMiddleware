@@ -2,13 +2,13 @@
 using RuleBasedFilterLibrary.Core.Model.SequenceAnalyses;
 using RuleBasedFilterLibrary.Core.Services.RequestSequenceValidation;
 using RuleBasedFilterLibrary.Extensions;
-using RuleBasedFilterLibrary.Infrastructure.Services.RequestsStorage;
+using RuleBasedFilterLibrary.Infrastructure.Services.RequestStorage;
 
 namespace RuleBasedFilterLibrary.Core.Services.RequestSequenceAnalysis;
 
 public class MonotonicityAnalyzer(IRequestStorage requestsStorage, RuleBasedRequestFilterOptions options) : IRequestSequenceAnalyzer
 {
-    public async Task<bool> Analyze(string userIp, List<ParameterSequenceAnalysis> parameterRules)
+    public async Task<bool> DidAnalysisSucceed(string userIp, List<ParameterSequenceAnalysis> parameterRules)
     {
         var brokenRulesCount = 0;
 

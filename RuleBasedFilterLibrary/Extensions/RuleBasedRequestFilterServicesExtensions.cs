@@ -1,13 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using OpenSearch.Client;
 using RuleBasedFilterLibrary.Core.Services.ParameterRuleFactory;
 using RuleBasedFilterLibrary.Core.Services.ParameterSequenceAnalysisFactory;
-using RuleBasedFilterLibrary.Core.Services.RequestSequenceAnalysis;
 using RuleBasedFilterLibrary.Core.Services.RequestSequenceValidation;
 using RuleBasedFilterLibrary.Core.Services.RequestStorageManager;
 using RuleBasedFilterLibrary.Core.Services.RuleFactory;
 using RuleBasedFilterLibrary.Core.Services.SequenceAnalysisFactory;
-using RuleBasedFilterLibrary.Infrastructure.Services.RequestsStorage;
+using RuleBasedFilterLibrary.Infrastructure.Services.RequestStorage;
 using RuleBasedFilterLibrary.Infrastructure.Services.RulesFileParsing;
 using RuleBasedFilterLibrary.Middleware.Services.RequestValidation;
 
@@ -25,9 +23,6 @@ public static class RuleBasedRequestFilterServicesExtensions
         services.AddSingleton<ISequenceAnalysisFactory, SequenceAnalysisFactory>();
         services.AddSingleton<IRequestValidationService, RequestValidationService>();
 
-        if (options.EnableRequestSequenceValidation)
-            services.AddRequestSequenceStorageService(options);
-
         return services;
     }
 
@@ -38,16 +33,13 @@ public static class RuleBasedRequestFilterServicesExtensions
         return services;
     }
 
-    private static IServiceCollection AddRequestSequenceStorageService(this IServiceCollection services, RuleBasedRequestFilterOptions options)
-    {
-        var nodeAddress = new Uri(options.NodeAddress);
-        var config = new ConnectionSettings(nodeAddress).DefaultIndex(options.IndexName);
-        var client = new OpenSearchClient(config);
-        var deleteRequest = new DeleteIndexRequest(Indices.Parse(options.IndexName));
-        client.Indices.Delete(deleteRequest);
+    public static IServiceCollection UseRequestStorage(this IServiceCollection services, IRequestStorage? customRequestStorage = null)
+    {   
+        if (customRequestStorage == null)
+            services.AddSingleton<IRequestStorage, OpensearchRequestStorage>();
+        else
+            services.AddSingleton(customRequestStorage);
 
-        services.AddSingleton<IOpenSearchClient>(client);
-        services.AddSingleton<IRequestStorage, OpensearchRequestStorage>();
         services.AddSingleton<IRequestStorageManager, RequestStorageManager>();
 
         return services;

@@ -17,7 +17,9 @@ var options = new RuleBasedRequestFilterOptions
 {
     EnableRequestSequenceValidation = true
 };
-builder.Services.AddRuleBasedRequestFilterServices(options)
+builder.Services
+    .AddRuleBasedRequestFilterServices(options)
+    .UseRequestStorage()
     .AddSequenceAnalyzer<MonotonicityAnalyzer>()
     .AddSequenceAnalyzer<NonMonotonicityAnalyzer>();
 
