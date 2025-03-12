@@ -11,7 +11,7 @@ public class RuleFactory(IParameterRuleFactory parameterRuleFactory, ISequenceAn
     public IRule CreateRuleFromItsRawRepresentation(RawRule rawRequestRule)
     {
         var accessPolicy = AccessPolicyFactory.CreateAccessPolicyFromString(rawRequestRule.AccessPolicy);
-        var requestParameterRules = rawRequestRule.ParameterRules
+        var requestParameterRules = rawRequestRule.ArgumentRules
             .Select(parameterRuleFactory.CreateFromRawRequestParameterRule)
             .ToList();
 
@@ -26,7 +26,7 @@ public class RuleFactory(IParameterRuleFactory parameterRuleFactory, ISequenceAn
             AccessPolicy = accessPolicy,
             HttpMethod = rawRequestRule.Method,
             Endpoint = rawRequestRule.Endpoint,
-            ParameterRules = requestParameterRules,
+            ArgumentRules = requestParameterRules,
             SequenceAnalyses = sequenceAnalyses
         };
 

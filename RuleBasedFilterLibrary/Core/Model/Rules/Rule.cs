@@ -2,6 +2,7 @@
 using RuleBasedFilterLibrary.Core.Model.AccessPolicies;
 using RuleBasedFilterLibrary.Core.Model.ParameterRules.Base;
 using RuleBasedFilterLibrary.Core.Model.SequenceAnalyses;
+using RuleBasedFilterLibrary.Extensions;
 using System.Web;
 
 namespace RuleBasedFilterLibrary.Core.Model.Rules;
@@ -39,7 +40,7 @@ public class Rule : IRule
     /// <summary>
     /// Правила для отдельных параметров запроса
     /// </summary>
-    public List<ParameterRuleBase> ParameterRules { get; set; } = [];
+    public List<IParameterRule> ArgumentRules { get; set; } = [];
 
     /// <summary>
     /// Анализаторы последовательности запросов
@@ -60,7 +61,7 @@ public class Rule : IRule
 
         if (DidEndpointMatch(endpoint))
             isRequestEthalon = true;
-
+            
         if (!string.IsNullOrEmpty(SourceIp))
             isRequestEthalon = isRequestEthalon && clientIp.Equals(SourceIp, StringComparison.InvariantCultureIgnoreCase);
 
@@ -102,20 +103,17 @@ public class Rule : IRule
     {
         var totalBrokenRulesCount = 0;
 
-        foreach (var parameterRule in ParameterRules)
+        foreach (var parameterRule in ArgumentRules)
         {
-            var parameterValueAsString = HttpUtility
-                .ParseQueryString(request.QueryString.Value)
-                .Get(parameterRule.Name) ??
-                throw new ArgumentException("Failed to parse request parameter");
+            var currentArguments = HttpUtility.ParseQueryString(request.QueryString.Value).ToDictionary();
 
-            var parameterValidationResult = parameterRule.CompareTo(parameterValueAsString);
+            var parameterValidationResult = parameterRule.Validate(currentArguments);
 
             if (parameterValidationResult)
                 totalBrokenRulesCount++;
         }
 
-        if (totalBrokenRulesCount == ParameterRules.Count)
+        if (totalBrokenRulesCount == ArgumentRules.Count)
             return true;
 
         return false;

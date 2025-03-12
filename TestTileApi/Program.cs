@@ -21,7 +21,8 @@ builder.Services
     .AddRuleBasedRequestFilterServices(options)
     .UseRequestStorage()
     .AddSequenceAnalyzer<MonotonicityAnalyzer>()
-    .AddSequenceAnalyzer<NonMonotonicityAnalyzer>();
+    .AddSequenceAnalyzer<NonMonotonicityAnalyzer>()
+    .AddSequenceAnalyzer<NonRandomSequenceAnalyzer>();
 
 var tilesDirectory = builder.Configuration["Tiles:LocalStoragePath"] ?? string.Empty;
 
