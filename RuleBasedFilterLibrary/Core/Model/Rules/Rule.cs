@@ -68,7 +68,7 @@ public class Rule : IRule
         if (!string.IsNullOrEmpty(HttpMethod))
             isRequestEthalon = isRequestEthalon && context.Request.Method.Equals(HttpMethod, StringComparison.InvariantCultureIgnoreCase);
 
-        if (ParameterRules.Count > 0)
+        if (ArgumentRules.Count > 0)
             isRequestEthalon = isRequestEthalon && AreParamtersEqualToDeclaredEthalons(context.Request);
 
         return AccessPolicy switch

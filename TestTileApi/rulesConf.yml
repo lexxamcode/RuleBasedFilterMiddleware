@@ -25,6 +25,7 @@ rules:
         - name: x
           type: int
         - name: y
+          type: int
       - analysis-type: NonMonotonicityAnalyzer
         by-arguments:
         - name: x
