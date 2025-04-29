@@ -2,6 +2,8 @@
 
 Rule-Based Filter Middleware is an ASP.NET Core middleware library that provides configurable request filtering and validation through rule-based policies. 
 It enables you to protect your web APIs from abuse, scraping, and various attack patterns by defining rules in YAML configuration files.
+## Wiki
+https://deepwiki.com/lexxamcode/RuleBasedFilterMiddleware
 
 ## Features
 
@@ -147,10 +149,6 @@ The repository includes sample applications demonstrating how to use the middlew
 
 - **TestTileApi**: Shows how to implement the middleware in a tile server API
 - **TestWebApplication**: Demonstrates basic rule configuration and usage
-
-## License
-
-This project is licensed under the MIT License.
 
 ## Notes
 
