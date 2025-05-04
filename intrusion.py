@@ -1,15 +1,17 @@
 import requests
 import random
+import uuid
 
 maxZoom = 6
-tileServerUrl = "http://localhost:5279/tiles"
+tileServerUrl = "http://37.46.17.101:9091/TileProxy"
+sessionId = uuid.uuid5(uuid.NAMESPACE_DNS, 'intruder_basic_bulk_download')
 downloadFolder = "DownloadedTiles"
 
 
 def basicBulkDownload():
     for x in range (0, 2**maxZoom - 1):
         for y in range (0, 2**maxZoom - 1):
-            response = requests.get("{tileServerUrl}?z={z}&x={x}&y={y}".format(tileServerUrl=tileServerUrl, z=maxZoom, x=x, y=y))
+            response = requests.get("{tileServerUrl}?z={z}&x={x}&y={y}&sessionId={sessionId}".format(tileServerUrl=tileServerUrl, z=maxZoom, x=x, y=y, sessionId=sessionId))
             print(maxZoom, x, y)
             print(response.status_code)
 
@@ -18,7 +20,7 @@ def basicBulkDownloadReverse():
     
     for x in range (2**maxZoom - 1, 0, -1):
         for y in range (2**maxZoom - 1, 0, -1):
-            response = requests.get("{tileServerUrl}?z={z}&x={x}&y={y}".format(tileServerUrl=tileServerUrl, z=maxZoom, x=x, y=y))
+            response = requests.get("{tileServerUrl}?z={z}&x={x}&y={y}&sessionId={sessionId}".format(tileServerUrl=tileServerUrl, z=maxZoom, x=x, y=y, sessionId=sessionId))
             print(maxZoom, x, y)
             print(response.status_code)
     print("I did " + str(requestsCount) + " requests!")
@@ -31,7 +33,7 @@ def randomBulkDownload(zoom: int, leftXTileIndex: int, rightXTileIndex:int, uppe
         x: int = random.randint(leftXTileIndex, rightXTileIndex)
         y: int = random.randint(upperYTileIndex, downYTileIndex)
 
-        requestPayload: str = "z={z}&x={x}&y={y}".format(tileServerUrl=tileServerUrl, z=zoom, x=x, y=y)
+        requestPayload: str = "z={z}&x={x}&y={y}&sessionId={sessionId}".format(tileServerUrl=tileServerUrl, z=zoom, x=x, y=y, sessionId=sessionId)
 
         if requestPayload in alreadySent:
             continue
@@ -41,4 +43,6 @@ def randomBulkDownload(zoom: int, leftXTileIndex: int, rightXTileIndex:int, uppe
         print(zoom, x, y, response.status_code)
 
 if __name__ == '__main__':
-    randomBulkDownload(6, -100, 100, 0, 100)
+    sessionId = uuid.uuid5(uuid.NAMESPACE_DNS, 'intruder_random_bulk_download_zoom_11')
+    print(sessionId)
+    randomBulkDownload(11, 500, 800, 20, 320)

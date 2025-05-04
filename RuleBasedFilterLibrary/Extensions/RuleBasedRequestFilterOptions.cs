@@ -1,4 +1,6 @@
-﻿namespace RuleBasedFilterLibrary.Extensions;
+﻿using RuleBasedFilterLibrary.Core.Model.Requests;
+
+namespace RuleBasedFilterLibrary.Extensions;
 
 public class RuleBasedRequestFilterOptions
 {
@@ -8,5 +10,8 @@ public class RuleBasedRequestFilterOptions
     public string IndexName { get; set; } = "requests";
     public int MaxNumberOfRecentRequests { get; set; } = 20;
     public int MinLengthOfAnalyzedSequence { get; set; } = 10;
+
+    public Func<Request, Task>? OnViolationAction { get; set; }
+
     public static RuleBasedRequestFilterOptions Default => new();
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TileServerApi.Model;
+using OpenSearch.Client;
 
-namespace TileServerApi.Controllers;
+namespace TestTileApi.Controllers;
 
 /// <summary>
 /// Контроллер для получения тайлов по их координатам
@@ -9,9 +9,13 @@ namespace TileServerApi.Controllers;
 /// <param name="tileRepository">Сервис работы с тайлами</param>
 [ApiController]
 [Route("[controller]")]
-public class TilesController(ITileRepository tileRepository) : ControllerBase
+public class TilesController(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<TilesController> logger) : ControllerBase
 {
-    private readonly ITileRepository _tileRepository = tileRepository;
+    private readonly string _tileServerDomain = configuration["TileSourceConfiguration:TileSource"] ??
+        throw new ArgumentNullException("Not found TileSourceConfiguration:TileSource section");
+
+    private readonly string _tileServerApiKey = configuration["TileSourceConfiguration:TileSourceApiKey"] ??
+        throw new ArgumentNullException("Not found TileSourceConfiguration:TileSourceApiKey section");
 
     /// <summary>
     /// Метод получения тайла по его координатам
@@ -21,25 +25,26 @@ public class TilesController(ITileRepository tileRepository) : ControllerBase
     /// <param name="y">Координата y</param>
     /// <returns>Изображение тайла</returns>
     [HttpGet]
-    public ActionResult GetTile(int z, int x, int y)
+    public async Task<ActionResult> GetTile(int z, int x, int y)
     {
-        try
-        {
-            return _tileRepository.GetTile(z.ToString(), x.ToString(), y.ToString());
-        }
-        catch (Exception)
-        {
-            return _tileRepository.GetTile("-1", "-1", "-1");
-        }
+        logger.LogInformation($"Tile {z} {x} {y}");
+        // Do nothing while testing
+        return await Task.FromResult(Ok());
     }
 
-    /// <summary>
-    /// Метод получения заблокированного тайла
-    /// </summary>
-    /// <returns>Изображение тайла</returns>
-    [HttpGet("broken_tile")]
-    public ActionResult GetBrokenTile()
+    [HttpGet("clear")]
+    public async Task<ActionResult> ClearOpenSearchIndex()
     {
-        return _tileRepository.GetTile("-1", "-1", "-1");
+        var nodeAddress = new Uri("http://localhost:9200");
+        var config = new ConnectionSettings(nodeAddress).DefaultIndex("requests");
+
+        var openSearchClient = new OpenSearchClient(config);
+
+        var deleteRequest = new DeleteIndexRequest(Indices.Parse("requests"));
+        await openSearchClient.Indices.DeleteAsync(deleteRequest);
+
+        logger.LogInformation("Clear");
+
+        return Ok();
     }
 }

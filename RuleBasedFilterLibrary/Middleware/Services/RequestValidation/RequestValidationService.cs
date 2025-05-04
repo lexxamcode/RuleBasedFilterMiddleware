@@ -41,16 +41,20 @@ public class RequestValidationService : IRequestValidationService
 
         foreach (var rule in _rules)
         {
-            var isRequestValid = await rule.IsRequestValid(context);
-            if (!isRequestValid)
-                return false;
+            var isRequestValid = true;
+            isRequestValid = await rule.IsRequestValid(context);
 
-            if (!_options.EnableRequestSequenceValidation)
+            if (_options.EnableRequestSequenceValidation)
+                isRequestValid = isRequestValid && await rule.IsRequestSequenceValid(context);
+
+            if (isRequestValid)
                 continue;
 
-            var isRequestSequenceValid = await rule.IsRequestSequenceValid(context);
-            if (!isRequestSequenceValid)
+            if (_options.OnViolationAction is not null)
+            {
+                await _options.OnViolationAction.Invoke(request);
                 return false;
+            }
         }
 
         return true;

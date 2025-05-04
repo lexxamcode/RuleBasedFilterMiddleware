@@ -28,44 +28,46 @@ public class NonRandomSequenceAnalyzer(IRequestStorage requestStorage, RuleBased
         if (requests.Count < options.MinLengthOfAnalyzedSequence)
             return false;
 
+        var meanDistance = 0d;
         for (var i = 1; i < requests.Count; i++)
         {
             var currentRequestParametersValues = requests[i]
                 .Parameters
                 .Where(parameter => parameterNamesToCheckRandom
                 .Contains(parameter.Key))
-                .Select(kvp => int.Parse(kvp.Value))
-                .ToList();
+                .ToDictionary();
 
             var previousRequestParametersValues = requests[i - 1]
                 .Parameters
                 .Where(parameter => parameterNamesToCheckRandom
                 .Contains(parameter.Key))
-                .Select(kvp => int.Parse(kvp.Value))
-                .ToList();
+                .ToDictionary();
 
             var distance = CalculateEuclideanDistance(currentRequestParametersValues, previousRequestParametersValues);
+            meanDistance += distance;
+
             if (distance > _maxDistance)
                 return true;
         }
+        meanDistance /= requests.Count;
 
         return false;
     }
 
-    private static double CalculateEuclideanDistance(List<int> array1, List<int> array2)
+    private static double CalculateEuclideanDistance(IDictionary<string, string> firstCoordinates, IDictionary<string, string> secondCoordinates)
     {
-        if (array1.Count != array2.Count)
-        {
-            throw new ArgumentException("Массивы должны иметь одинаковую длину");
-        }
+        var firstZ = int.Parse(firstCoordinates["z"]);
+        var firstX = int.Parse(firstCoordinates["x"]);
+        var firstY = int.Parse(firstCoordinates["y"]);
 
-        var sum = 0.0;
-        for (int i = 0; i < array1.Count; i++)
-        {
-            var diff = array1[i] - array2[i];
-            sum += diff * diff;
-        }
+        var secondZ = int.Parse(secondCoordinates["z"]);
+        var secondX = int.Parse(secondCoordinates["x"]);
+        var secondY = int.Parse(secondCoordinates["y"]);
 
-        return Math.Sqrt(sum);
+        if (firstZ != secondZ)
+            return 0;
+
+        var distance = Math.Sqrt(Math.Pow(secondX - firstX, 2) + Math.Pow(secondY - firstY, 2));
+        return distance;
     }
 }
